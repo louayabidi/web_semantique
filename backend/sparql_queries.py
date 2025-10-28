@@ -35,20 +35,86 @@ class SparqlQueries:
     def get_all_aliments(self):
         return f"""
         {self.prefix}
-        SELECT ?aliment ?nom ?calories
+        SELECT ?aliment ?nom ?calories ?indexGlycémique ?indiceSatiété ?scoreNutritionnel
+            ?groupe ?nutriment ?recommandation ?contreIndication
+            ?estRicheEnFibres ?estIndexGlycemiqueEleve
         WHERE {{
-            ?aliment rdf:type nutrition:Aliment .
-            OPTIONAL {{ ?aliment nutrition:nom ?nom }} .
-            OPTIONAL {{ ?aliment nutrition:Calories ?calories }} .
+            ?aliment a nutrition:Aliment .
+            
+            OPTIONAL {{ ?aliment nutrition:nom ?nom . }}
+            OPTIONAL {{ ?aliment nutrition:Calories ?calories . }}
+            OPTIONAL {{ ?aliment nutrition:indexGlycémique ?indexGlycémique . }}
+            OPTIONAL {{ ?aliment nutrition:indiceSatiété ?indiceSatiété . }}
+            OPTIONAL {{ ?aliment nutrition:scoreNutritionnel ?scoreNutritionnel . }}
+            
+            # Relations
+            OPTIONAL {{ ?aliment nutrition:appartientÀGroupe ?groupe . }}
+            OPTIONAL {{ ?aliment nutrition:contient ?nutriment . }}
+            OPTIONAL {{ ?aliment nutrition:estRecommandéPour ?recommandation . }}
+            OPTIONAL {{ ?aliment nutrition:estContreIndiquéPour ?contreIndication . }}
+            
+            # Sous-classes
+            OPTIONAL {{ 
+                ?aliment a nutrition:AlimentRicheEnFibres .
+                BIND("true" as ?estRicheEnFibres)
+            }}
+            OPTIONAL {{ 
+                ?aliment a nutrition:AlimentÀIndexGlycémiqueÉlevé .
+                BIND("true" as ?estIndexGlycemiqueEleve)
+            }}
         }}
+        ORDER BY ?nom
         """
     
-    def create_aliment(self, aliment_id, nom, calories):
-        return f"""
+   # Dans votre fichier sparql.py
+    def create_aliment(self, aliment_id: str, aliment):
+        """Crée un aliment COMPLET avec toutes ses relations"""
+        
+        clean_id = self.clean_id(aliment_id)
+        
+        sparql = f"""
         {self.prefix}
         INSERT DATA {{
-            nutrition:{aliment_id} rdf:type nutrition:Aliment .
-            nutrition:{aliment_id} nutrition:nom "{nom}" .
-            nutrition:{aliment_id} nutrition:Calories {calories} .
-        }}
+            nutrition:{clean_id} a nutrition:Aliment ;
+                nutrition:nom "{aliment.nom}" ;
+                nutrition:Calories {aliment.calories} ;
+                nutrition:indexGlycémique {aliment.indexGlycémique} ;
+                nutrition:indiceSatiété {aliment.indiceSatiété} ;
+                nutrition:scoreNutritionnel {aliment.scoreNutritionnel} .
         """
+        
+        # AJOUTER TOUTES LES RELATIONS
+        # Groupes alimentaires
+        for groupe in aliment.groupes:
+            clean_groupe = self.clean_id(groupe)
+            sparql += f"    nutrition:{clean_id} nutrition:appartientÀGroupe nutrition:{clean_groupe} .\n"
+        
+        # Nutriments
+        for nutriment in aliment.nutriments:
+            clean_nutriment = self.clean_id(nutriment)
+            sparql += f"    nutrition:{clean_id} nutrition:contient nutrition:{clean_nutriment} .\n"
+        
+        # Recommandations
+        for reco in aliment.recommandations:
+            clean_reco = self.clean_id(reco)
+            sparql += f"    nutrition:{clean_id} nutrition:estRecommandéPour nutrition:{clean_reco} .\n"
+        
+        # Contre-indications
+        for contre in aliment.contre_indications:
+            clean_contre = self.clean_id(contre)
+            sparql += f"    nutrition:{clean_id} nutrition:estContreIndiquéPour nutrition:{clean_contre} .\n"
+        
+        # Sous-classes spéciales
+        if aliment.est_riche_en_fibres:
+            sparql += f"    nutrition:{clean_id} a nutrition:AlimentRicheEnFibres .\n"
+        
+        if aliment.est_index_glycemique_eleve:
+            sparql += f"    nutrition:{clean_id} a nutrition:AlimentÀIndexGlycémiqueÉlevé .\n"
+        
+        sparql += "}"
+        return sparql
+
+    def clean_id(self, text: str) -> str:
+        """Nettoie un ID pour SPARQL"""
+        return text.replace(" ", "_").replace("'", "").replace(",", "")
+    
