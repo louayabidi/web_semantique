@@ -1,0 +1,56 @@
+Prompt (texte) à donner à Bolt IA (FR) — copie/colle direct
+
+Bonjour Bolt,
+Je veux que tu génères une application full-stack pour un projet de recommandation nutritionnelle sémantique. Voici les exigences claires et prioritaires :
+
+Stack technique
+
+Backend : Python (FastAPI)
+
+Frontend : React (create-react-app ou Vite)
+
+Base de données : PostgreSQL (pour données applicatives relationnelles)
+
+Ontologie : fichier OWL (je fournis ontology.owl), accessible côté serveur.
+
+Recherche sémantique : exécuter des requêtes SPARQL sur l’ontologie (via RDFLib en mémoire ou connexion à un triplestore comme Apache Jena Fuseki/GraphDB si tu préconises).
+
+Authentification : JWT, sessions frontend, rôles admin et user.
+
+Fonctionnalités
+
+Génération automatique des entités CRUD : analyser l’OWL et créer les routes CRUD REST (backoffice seulement pour création / modification, frontoffice pour affichage/public). Le flux logique doit respecter l’ontologie (ex : création d’un Produit se fait en backoffice; affichage dans le catalogue frontoffice).
+
+Recherche sémantique avancée :
+
+Endpoint /sparql qui accepte une requête SPARQL brute et renvoie résultats JSON.
+
+Endpoint /nl-search qui accepte une requête en langage naturel (ex : « quels sont les produits de la catégorie X ? ») et transforme la requête NL en SPARQL via templates + règles simples (exemples et fallback).
+
+Rôles et sécurité : endpoints protégés, pages d’administration accessibles uniquement aux admin. CRUDs vérifient le rôle.
+
+UI : pages frontoffice (catalogue, fiche produit, filtres), pages backoffice (listing, création, édition), preview/aperçu image avant upload si produit a image.
+
+Filtrage & requêtes complexes : support pour filtres combinés (catégorie, nutriment, allergies, objectifs santé — basés sur ontologie) ; pagination ; tri.
+
+Export SPARQL & mapping : sauvegarder les instances créées en base relationnelle et aussi créer/mettre à jour un graphe RDF (triples) pour garder cohérence sémantique.
+
+Livrables attendus
+
+Arborescence du projet + scripts de démarrage (Docker Compose).
+
+Backend FastAPI prêt à lancer, avec : modèle DB (SQLAlchemy), endpoints auth (register/login/logout), CRUD pour classes principales (générés selon OWL), endpoint SPARQL et NL→SPARQL.
+
+Frontend React complet avec login/logout, rôle-based routing, backoffice & frontoffice CRUD UI.
+
+Exemple concret de mapping NL→SPARQL + 5 exemples de requêtes NL et leurs SPARQL équivalents.
+
+README avec étapes d’installation (docker compose up), comment charger ontology.owl, et comment tester les endpoints.
+
+Remarques
+
+Si l’ontologie est très grosse, utilise un triplestore externe (donne instructions pour Fuseki + Docker). Sinon RDFLib en mémoire est acceptable pour le dev.
+
+Le CRUD doit respecter la logique métier : création en backoffice seulement; affichage en frontoffice; actions réservées à admin.
+
+Fournis du code clair et commenté.

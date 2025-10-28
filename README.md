@@ -1,186 +1,366 @@
-# NutriSmart - Système de Recommandation Nutritionnelle Intelligent
+# Plateforme de Recommandations Nutritionnelles Sémantiques
 
-Application web full-stack basée sur une ontologie OWL pour recommander des aliments et activités physiques selon les besoins individuels et la santé.
+Application full-stack de recommandation nutritionnelle basée sur une ontologie OWL avec recherche sémantique SPARQL et traduction langage naturel.
 
-## Caractéristiques
+## 🚀 Stack Technique
 
-### Fonctionnalités Principales
+- **Backend**: Python FastAPI
+- **Frontend**: React (Vite)
+- **Base de données**: PostgreSQL
+- **Ontologie**: OWL/RDF avec RDFLib
+- **Recherche sémantique**: SPARQL (in-memory avec RDFLib)
+- **Authentification**: JWT avec rôles (admin/user)
 
-- **Authentification complète** : Inscription, connexion, gestion de session
-- **Gestion des rôles** : Utilisateurs standard et administrateurs
-- **Backoffice (Admin)** : CRUD complet pour gérer :
-  - Aliments (calories, index glycémique, fibres)
-  - Activités physiques (type, durée, niveau, calories)
-  - Nutriments (vitamines, minéraux, protéines, glucides, lipides)
-  - Conditions médicales (diabète, hypertension, obésité)
-  - Programmes de bien-être
-- **Frontoffice (Utilisateurs)** :
-  - Visualisation des aliments et activités
-  - Dashboard personnel avec statistiques
-  - Recommandations personnalisées
-- **Recherche Sémantique** : Questions en langage naturel
-  - "Quels aliments pour le diabète ?"
-  - "Aliments riches en fibres"
-  - "Activités cardio disponibles"
-- **Base de données relationnelle** : PostgreSQL via Supabase
-- **Sécurité RLS** : Row Level Security sur toutes les tables
+## 📋 Fonctionnalités
 
-## Architecture
+### ✅ Backend
+- ✅ Authentification JWT avec rôles admin et user
+- ✅ CRUD automatique pour les entités de l'ontologie (Aliment, Recette, Nutriment, etc.)
+- ✅ Endpoint `/api/semantic/sparql` pour requêtes SPARQL brutes
+- ✅ Endpoint `/api/semantic/nl-search` pour requêtes en langage naturel
+- ✅ Synchronisation PostgreSQL ↔ RDF Graph
+- ✅ Modèles SQLAlchemy pour: Aliment, Recette, Nutriment, GroupeAlimentaire, Allergie, Objectif, Personne
 
-### Stack Technique
+### ✅ Frontend
+- ✅ Interface publique (frontoffice) : catalogue, recettes, recherche sémantique
+- ✅ Interface admin (backoffice) : gestion CRUD des entités
+- ✅ Authentification avec gestion des rôles
+- ✅ Filtrage avancé par catégorie, nutriments, recherche texte
+- ✅ Interface de recherche sémantique (NL + SPARQL)
 
-- **Frontend** : React 18 + TypeScript + Vite
-- **Styling** : Tailwind CSS
-- **Backend** : Supabase (PostgreSQL + Auth)
-- **Base de données** : PostgreSQL avec RLS
-- **Icônes** : Lucide React
+## 🏗️ Architecture du Projet
 
-### Structure de la Base de Données
+\`\`\`
+.
+├── backend/
+│   ├── app/
+│   │   ├── api/              # Routes API
+│   │   │   ├── auth.py       # Authentification
+│   │   │   ├── aliments.py   # CRUD Aliments
+│   │   │   ├── recettes.py   # CRUD Recettes
+│   │   │   ├── sparql.py     # Recherche sémantique
+│   │   │   └── crud_entities.py  # Autres entités
+│   │   ├── core/             # Configuration
+│   │   │   ├── config.py
+│   │   │   ├── database.py
+│   │   │   └── security.py   # JWT, hashing
+│   │   ├── models/           # Modèles SQLAlchemy
+│   │   │   ├── user.py
+│   │   │   └── nutrition.py
+│   │   ├── schemas/          # Schémas Pydantic
+│   │   │   ├── user.py
+│   │   │   └── nutrition.py
+│   │   └── services/         # Services métier
+│   │       ├── ontology_loader.py   # Chargement OWL
+│   │       └── sparql_service.py    # SPARQL queries
+│   ├── ontology/
+│   │   └── nutrition.owl     # Ontologie OWL
+│   ├── main.py              # Point d'entrée FastAPI
+│   ├── init_db.py           # Initialisation DB
+│   └── requirements.txt
+│
+├── frontend/
+│   ├── src/
+│   │   ├── components/      # Composants réutilisables
+│   │   │   └── Navbar.jsx
+│   │   ├── contexts/        # Contextes React
+│   │   │   └── AuthContext.jsx
+│   │   ├── pages/           # Pages de l'application
+│   │   │   ├── Home.jsx
+│   │   │   ├── Login.jsx
+│   │   │   ├── Register.jsx
+│   │   │   ├── Catalog.jsx  # Frontoffice
+│   │   │   ├── Recettes.jsx # Frontoffice
+│   │   │   ├── Search.jsx   # Recherche sémantique
+│   │   │   └── Admin.jsx    # Backoffice
+│   │   ├── services/
+│   │   │   └── api.js       # Appels API
+│   │   ├── App.jsx
+│   │   └── main.jsx
+│   ├── index.html
+│   ├── vite.config.js
+│   └── package.json
+│
+└── docker-compose.yml
+\`\`\`
 
-L'ontologie OWL a été transformée en schéma relationnel PostgreSQL :
+## 🚀 Installation et Démarrage
 
-#### Tables Principales
-- `personnes` : Utilisateurs avec profils santé
-- `aliments` : Catalogue d'aliments avec propriétés nutritionnelles
-- `nutriments` : Vitamines, minéraux, macronutriments
-- `activites_physiques` : Exercices et activités
-- `conditions_medicales` : Diabète, hypertension, obésité, etc.
-- `allergies` : Allergies alimentaires
-- `preferences_alimentaires` : Végétarien, sans gluten, etc.
-- `programmes_bien_etre` : Programmes personnalisés
-- `objectifs` : Objectifs de bien-être
-- `recommandations` : Recommandations générées
+### Option 1: Avec Docker Compose (Recommandé)
 
-#### Tables de Relations
-- Relations many-to-many entre entités
-- Historique des consommations et pratiques
-- Liens aliments-nutriments
-- Aliments recommandés/contre-indiqués par condition
+\`\`\`bash
+# Lancer tous les services
+docker-compose up -d
 
-## Utilisation
+# Les services seront disponibles sur:
+# - Frontend: http://localhost:5000
+# - Backend API: http://localhost:8000
+# - Docs API: http://localhost:8000/docs
+\`\`\`
 
-### Connexion
+### Option 2: Installation manuelle (Développement Replit)
 
-1. **Créer un compte** : Utilisez l'onglet "Inscription"
-2. **Se connecter** : Email + mot de passe
+#### 1. Backend
 
-### Compte Admin de Test
+\`\`\`bash
+cd backend
 
-```
-Email: admin@nutrismart.com
-Mot de passe: admin123
-```
+# Initialiser la base de données
+python init_db.py
 
-### Navigation
+# Démarrer le serveur FastAPI
+python main.py
+# Ou avec uvicorn:
+uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+\`\`\`
 
-#### Accueil
-- Vue d'ensemble des statistiques
-- Recommandations personnalisées
-- Accès rapide aux fonctionnalités
+Le backend sera disponible sur: http://localhost:8000
 
-#### Recherche Sémantique
-- Posez des questions en langage naturel
-- Exemples de requêtes fournis
-- Résultats filtrés et pertinents
+#### 2. Frontend
 
-#### Administration (Admin uniquement)
-- **Aliments** : CRUD complet avec calories, index glycémique
-- **Activités** : Gestion des exercices physiques
-- **Nutriments** : Consultation des nutriments
-- **Conditions** : Liste des conditions médicales
-- **Programmes** : Programmes de bien-être
+\`\`\`bash
+cd frontend
 
-### Recherche Sémantique
-
-La recherche comprend le langage naturel et effectue des requêtes intelligentes :
-
-- **Diabète** : Trouve aliments recommandés et contre-indiqués
-- **Fibres** : Trouve tous les aliments riches en fibres
-- **Fruits/Légumes** : Filtre par groupe alimentaire
-- **Cardio** : Trouve activités cardiovasculaires
-- **Perte de poids** : Trouve programmes et objectifs
-
-## Base de Données
-
-### Données Pré-chargées
-
-L'application contient déjà :
-- 14 aliments avec propriétés nutritionnelles
-- 14 activités physiques variées
-- 10 nutriments essentiels
-- 10 conditions médicales
-- 10 allergies courantes
-- 3 préférences alimentaires
-- 10 programmes de bien-être
-- 10 objectifs de santé
-
-### Sécurité (RLS)
-
-Toutes les tables sont protégées par Row Level Security :
-- Les utilisateurs voient uniquement leurs données personnelles
-- Les admins ont accès complet
-- Les données publiques (aliments, activités) sont en lecture seule pour tous
-
-## Développement
-
-### Commandes
-
-```bash
-# Développement
+# Démarrer le serveur de développement
 npm run dev
+\`\`\`
 
-# Build production
-npm run build
+Le frontend sera disponible sur: http://localhost:5000
 
-# Vérification TypeScript
-npm run typecheck
+## 🔐 Authentification
 
-# Linter
-npm run lint
-```
+### Compte Admin par défaut
 
-### Variables d'Environnement
+- **Username**: \`admin\`
+- **Password**: \`admin123\`
 
-Configurées dans `.env` :
-```
-VITE_SUPABASE_URL=<votre-url>
-VITE_SUPABASE_ANON_KEY=<votre-clé>
-```
+### Créer un nouveau compte
 
-## Ontologie OWL Implémentée
+Utilisez la page d'inscription ou l'endpoint API:
 
-### Classes Principales
-- ActivitéPhysique (Cardio, Musculation, Yoga, Fitness)
-- Aliment
-- Nutriment (Vitamine, Minéral, Protéine, Glucide, Lipide)
-- ConditionMédicale (Diabète, Hypertension, Obésité, Grossesse)
-- Allergie
-- PréférenceAlimentaire (Végétarien, Sans Gluten, Sans Lactose)
-- ProgrammeBienEtre
-- Objectif
-- Recommandation
+\`\`\`bash
+curl -X POST http://localhost:8000/api/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "user1",
+    "email": "user1@example.com",
+    "password": "password123",
+    "is_admin": false
+  }'
+\`\`\`
 
-### Propriétés d'Objets
-- consomme, pratique, aCondition, aAllergie, aPréférence
-- contient, estRecommandéPour, estContreIndiquéPour
-- Vise, Nécessite, Conseille
+## 🔍 Exemples de Recherche Sémantique
 
-### Propriétés de Données
-- Calories, index_glycemique, riche_en_fibres
-- duree_activite, niveau_difficulte, calories_brulees
-- dose_recommandee, unite_dose
-- age, poids, taille, genre
+### 5 Exemples de Requêtes Langage Naturel → SPARQL
 
-## Fonctionnalités Futures
+#### Exemple 1: Aliments par catégorie
 
-- Génération automatique de recommandations IA
-- Graphiques et statistiques avancées
-- Export PDF des programmes
-- Intégration calendrier
-- Application mobile
-- API REST publique
-- Notifications push
+**Question NL**: "Quels sont les produits de la catégorie Fruits ?"
 
-## Licence
+**SPARQL généré**:
+\`\`\`sparql
+PREFIX nutrition: <http://www.semanticweb.org/user/ontologies/2025/8/nutrition#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
-Projet éducatif - Web Sémantique
+SELECT DISTINCT ?aliment ?groupe
+WHERE {
+    ?aliment rdf:type nutrition:Aliment .
+    ?aliment nutrition:appartientÀGroupe ?groupe .
+    ?groupe rdf:type nutrition:GroupeAlimentaire .
+}
+\`\`\`
+
+#### Exemple 2: Recettes pour diabétiques
+
+**Question NL**: "Quelles recettes pour les diabétiques ?"
+
+**SPARQL généré**:
+\`\`\`sparql
+PREFIX nutrition: <http://www.semanticweb.org/user/ontologies/2025/8/nutrition#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT DISTINCT ?recette ?aliment
+WHERE {
+    ?recette rdf:type nutrition:Recette .
+    ?recette nutrition:estComposéDe ?aliment .
+    ?aliment nutrition:estRecommandéPour ?condition .
+    ?condition rdf:type nutrition:Diabète .
+}
+\`\`\`
+
+#### Exemple 3: Nutriments dans les aliments
+
+**Question NL**: "Quels aliments contiennent des vitamines ?"
+
+**SPARQL généré**:
+\`\`\`sparql
+PREFIX nutrition: <http://www.semanticweb.org/user/ontologies/2025/8/nutrition#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT DISTINCT ?aliment ?nutriment
+WHERE {
+    ?aliment rdf:type nutrition:Aliment .
+    ?aliment nutrition:contient ?nutriment .
+    ?nutriment rdf:type nutrition:Nutriment .
+}
+\`\`\`
+
+#### Exemple 4: Liste des allergies
+
+**Question NL**: "Quelles sont les allergies connues ?"
+
+**SPARQL généré**:
+\`\`\`sparql
+PREFIX nutrition: <http://www.semanticweb.org/user/ontologies/2025/8/nutrition#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT DISTINCT ?allergie ?type
+WHERE {
+    ?allergie rdf:type nutrition:Allergie .
+    OPTIONAL { ?allergie nutrition:typeAllergie ?type . }
+}
+\`\`\`
+
+#### Exemple 5: Objectifs de santé
+
+**Question NL**: "Quels sont les objectifs disponibles ?"
+
+**SPARQL généré**:
+\`\`\`sparql
+PREFIX nutrition: <http://www.semanticweb.org/user/ontologies/2025/8/nutrition#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT DISTINCT ?objectif ?description
+WHERE {
+    ?objectif rdf:type nutrition:Objectif .
+    OPTIONAL { ?objectif nutrition:objectifBienEtre ?description . }
+}
+\`\`\`
+
+## 📡 Tester les Endpoints API
+
+### 1. Authentification
+
+\`\`\`bash
+# Login
+curl -X POST http://localhost:8000/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"username": "admin", "password": "admin123"}'
+\`\`\`
+
+### 2. Récupérer les aliments
+
+\`\`\`bash
+curl http://localhost:8000/api/aliments
+\`\`\`
+
+### 3. Recherche SPARQL brute
+
+\`\`\`bash
+curl -X POST http://localhost:8000/api/semantic/sparql \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "PREFIX nutrition: <http://www.semanticweb.org/user/ontologies/2025/8/nutrition#> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> SELECT DISTINCT ?class WHERE { ?class rdf:type <http://www.w3.org/2002/07/owl#Class> } LIMIT 20"
+  }'
+\`\`\`
+
+### 4. Recherche en langage naturel
+
+\`\`\`bash
+curl -X POST http://localhost:8000/api/semantic/nl-search \
+  -H "Content-Type: application/json" \
+  -d '{"query": "Quels sont les aliments riches en protéines ?"}'
+\`\`\`
+
+### 5. Créer un aliment (Admin uniquement)
+
+\`\`\`bash
+curl -X POST http://localhost:8000/api/aliments \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -d '{
+    "nom": "Poulet grillé",
+    "calories": 165,
+    "description": "Viande blanche riche en protéines",
+    "groupe_id": 3,
+    "nutriment_ids": [1]
+  }'
+\`\`\`
+
+## 🎯 Utilisation de l'Interface Web
+
+### Frontoffice (Accessible à tous)
+
+1. **Page d'accueil** (`/`): Présentation des fonctionnalités
+2. **Catalogue** (`/catalog`): Parcourir tous les aliments avec filtres
+3. **Recettes** (`/recettes`): Explorer les recettes disponibles
+4. **Recherche Sémantique** (`/search`): Interroger l'ontologie en NL ou SPARQL
+
+### Backoffice (Réservé aux admins)
+
+1. Connectez-vous avec le compte admin
+2. Accédez à la page **Admin** (`/admin`)
+3. Créez, modifiez ou supprimez des aliments et recettes
+4. Les modifications sont automatiquement synchronisées avec le graphe RDF
+
+## 🗄️ Base de Données
+
+### Modèles Principaux
+
+- **User**: Utilisateurs et admins
+- **Aliment**: Produits alimentaires
+- **Recette**: Recettes culinaires
+- **Nutriment**: Vitamines, minéraux, macronutriments
+- **GroupeAlimentaire**: Catégories (Fruits, Légumes, etc.)
+- **Allergie**: Allergies et intolérances
+- **Objectif**: Objectifs de santé et bien-être
+- **Personne**: Profils utilisateurs avec conditions médicales
+
+### Charger l'Ontologie
+
+L'ontologie OWL est chargée automatiquement au démarrage du backend depuis `backend/ontology/nutrition.owl`.
+
+Pour recharger manuellement:
+
+\`\`\`python
+from app.services.ontology_loader import ontology_loader
+ontology_loader.load_ontology()
+\`\`\`
+
+## 🔧 Configuration
+
+### Variables d'environnement (Backend)
+
+\`\`\`env
+DATABASE_URL=postgresql://user:password@localhost:5432/nutrition_db
+SECRET_KEY=your-secret-key-here
+ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=30
+\`\`\`
+
+## 📚 Documentation API
+
+La documentation interactive est disponible sur:
+
+- **Swagger UI**: http://localhost:8000/docs
+- **ReDoc**: http://localhost:8000/redoc
+
+## 🚀 Prochaines Étapes (Phase 2)
+
+- [ ] Intégration Apache Jena Fuseki pour triplestore scalable
+- [ ] NL→SPARQL avancé avec IA (GPT/Claude)
+- [ ] Moteur de recommandations personnalisées
+- [ ] Système de suggestions de recettes basé sur profil
+- [ ] Filtrage multi-critères avancé (saison, score nutritionnel)
+- [ ] Export PDF des recommandations
+- [ ] Tableau de bord analytics
+- [ ] Application mobile (PWA)
+
+## 🤝 Contribution
+
+Ce projet est un MVP de plateforme de recommandations nutritionnelles sémantiques. Les contributions sont les bienvenues!
+
+## 📄 Licence
+
+MIT License
