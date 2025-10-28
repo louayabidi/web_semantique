@@ -1,0 +1,1689 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://www.semanticweb.org/user/ontologies/2025/8/nutrition/"
+     xml:base="http://www.semanticweb.org/user/ontologies/2025/8/nutrition/"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:nutrition="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#">
+    <owl:Ontology rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#AProgramme -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#AProgramme">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Personne"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProgrammeBienEtre"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ComposeDe -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ComposeDe"/>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Conseille -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Conseille">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProfessionnelDeSanté"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Personne"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Impacte -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Impacte">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Nécessite -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Nécessite">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ActivitéPhysique"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Hydratation"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Possède -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Possède">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Pratique -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Pratique">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Personne"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ActivitéPhysique"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Suit -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Suit">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Vise -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Vise"/>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#aAllergie -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#aAllergie"/>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#aCondition -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#aCondition"/>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#aPréférence -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#aPréférence"/>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#appartientÀGroupe -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#appartientÀGroupe"/>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#associeActivité -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#associeActivité"/>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#associeAliment -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#associeAliment"/>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#associeProgramme -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#associeProgramme"/>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#consomme -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#consomme">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Personne"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Aliment"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#contient -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#contient">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Aliment"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Nutriment"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#contientRepas -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#contientRepas"/>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#convientÀ -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#convientÀ"/>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#estComposéDe -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#estComposéDe">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Repas"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Aliment"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#estContreIndiquéPour -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#estContreIndiquéPour">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Aliment"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ConditionMédicale"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#estRecommandéPour -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#estRecommandéPour">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Aliment"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ConditionMédicale"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#participeÀ -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#participeÀ"/>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#recommande -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#recommande"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Calories -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Calories">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Aliment"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Genre -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Genre">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#doseRecommandée -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#doseRecommandée"/>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#duréeActivité -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#duréeActivité"/>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#fréquenceRecommandée -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#fréquenceRecommandée"/>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#indexGlycémique -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#indexGlycémique">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Aliment"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#indiceSatiété -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#indiceSatiété"/>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#niveauDifficulté -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#niveauDifficulté">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ActivitéPhysique"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#niveauStress -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#niveauStress"/>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#niveauÉnergie -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#niveauÉnergie"/>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#nom -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#nom">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#objectifBienEtre -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#objectifBienEtre"/>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#objectifPoids -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#objectifPoids"/>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#poids -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#poids"/>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#quantité -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#quantité"/>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#scoreNutritionnel -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#scoreNutritionnel"/>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#taille -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#taille"/>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#tempsSommeil -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#tempsSommeil"/>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#typeAllergie -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#typeAllergie"/>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#unitéDose -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#unitéDose"/>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#volumeHydratation -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#volumeHydratation"/>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#âge -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#âge">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ActivitéPhysique -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ActivitéPhysique">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProgrammeBienEtre"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Nécessite"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Hydratation"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <owl:disjointWith rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Aliment"/>
+        <owl:disjointWith rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Nutriment"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Aliment -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Aliment">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Calories"/>
+                <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">0</owl:minQualifiedCardinality>
+                <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#AlimentRicheEnFibres -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#AlimentRicheEnFibres">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Aliment"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#AlimentÀIndexGlycémiqueÉlevé -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#AlimentÀIndexGlycémiqueÉlevé">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Aliment"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Allergie -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Allergie"/>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#BienÊtre -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#BienÊtre"/>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Cardio -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Cardio">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ActivitéPhysique"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ConditionMédicale -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ConditionMédicale"/>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Diabète -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Diabète">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ConditionMédicale"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Fitness -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Fitness">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ActivitéPhysique"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Glucide -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Glucide">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Nutriment"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Grossesse -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Grossesse">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ConditionMédicale"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#GroupeAlimentaire -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#GroupeAlimentaire"/>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Hydratation -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Hydratation">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProgrammeBienEtre"/>
+        <owl:disjointWith rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Sommeil"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Hypertension -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Hypertension">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ConditionMédicale"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Lipide -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Lipide">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Nutriment"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Minéral -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Minéral">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Nutriment"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Musculation -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Musculation">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ActivitéPhysique"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Nutriment -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Nutriment"/>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Objectif -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Objectif">
+        <owl:disjointWith rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProfessionnelDeSanté"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Obésité -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Obésité">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ConditionMédicale"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Personne -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Personne">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#AProgramme"/>
+                <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+                <owl:onClass rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProgrammeBienEtre"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#aAllergie"/>
+                <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">0</owl:minQualifiedCardinality>
+                <owl:onClass rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Allergie"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#aCondition"/>
+                <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">0</owl:minQualifiedCardinality>
+                <owl:onClass rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ConditionMédicale"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#aPréférence"/>
+                <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">0</owl:minQualifiedCardinality>
+                <owl:onClass rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#PréférenceAlimentaire"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#consomme"/>
+                <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+                <owl:onClass rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Aliment"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProfessionnelDeSanté -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProfessionnelDeSanté">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Personne"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProgrammeBienEtre -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProgrammeBienEtre">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Vise"/>
+                <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+                <owl:onClass rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Objectif"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Protéine -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Protéine">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Nutriment"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#PréférenceAlimentaire -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#PréférenceAlimentaire"/>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Recette -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Recette"/>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Recommandation -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Recommandation">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#recommande"/>
+                <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+                <owl:onClass rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Personne"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Repas -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Repas">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#estComposéDe"/>
+                <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">2</owl:minQualifiedCardinality>
+                <owl:onClass rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Aliment"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#RégimeAlimentaire -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#RégimeAlimentaire">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#contientRepas"/>
+                <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+                <owl:onClass rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Repas"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Saison -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Saison"/>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#SansGluten -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#SansGluten">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#PréférenceAlimentaire"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#SansLactose -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#SansLactose">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#PréférenceAlimentaire"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Sommeil -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Sommeil">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProgrammeBienEtre"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Vitamine -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Vitamine">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Nutriment"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Végétarien -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Végétarien">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#PréférenceAlimentaire"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Yoga -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Yoga">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ActivitéPhysique"/>
+    </owl:Class>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#AllergieArachides -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#AllergieArachides">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Allergie"/>
+        <nutrition:typeAllergie>Arachides</nutrition:typeAllergie>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#AllergieBlé -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#AllergieBlé">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Allergie"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#AllergieFruitsDeMer -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#AllergieFruitsDeMer">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Allergie"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#AllergieGluten -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#AllergieGluten">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Allergie"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#AllergieLactose -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#AllergieLactose">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Allergie"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#AllergieLait -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#AllergieLait">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Allergie"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#AllergieNoix -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#AllergieNoix">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Allergie"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#AllergieOeufs -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#AllergieOeufs">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Allergie"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#AllergiePoisson -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#AllergiePoisson">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Allergie"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#AllergieSoja -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#AllergieSoja">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Allergie"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Amandes -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Amandes">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Aliment"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#AméliorerDigestion -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#AméliorerDigestion">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Objectif"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#AméliorerEndurance -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#AméliorerEndurance">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Objectif"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#AméliorerPeau -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#AméliorerPeau">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Objectif"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#AméliorerSommeil -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#AméliorerSommeil">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Objectif"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#AugmenterÉnergie -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#AugmenterÉnergie">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Objectif"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Aérobic -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Aérobic">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ActivitéPhysique"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Banane -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Banane">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Aliment"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Brocoli -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Brocoli">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Aliment"/>
+        <nutrition:estRecommandéPour rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#DiabèteType2"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#BrunchWeekend -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#BrunchWeekend">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Repas"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Calcium -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Calcium">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Minéral"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#CatherineMoreau -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#CatherineMoreau">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Personne"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#CoachSportifBernard -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#CoachSportifBernard">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProfessionnelDeSanté"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#CollationAprèsMidi -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#CollationAprèsMidi">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Repas"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#CollationMatin -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#CollationMatin">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Repas"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#CourseCardio -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#CourseCardio">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Cardio"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#CourseÀPied -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#CourseÀPied">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ActivitéPhysique"/>
+        <nutrition:duréeActivité rdf:datatype="http://www.w3.org/2001/XMLSchema#float">30.0</nutrition:duréeActivité>
+        <nutrition:niveauDifficulté>Moyen</nutrition:niveauDifficulté>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#DavidSimon -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#DavidSimon">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Personne"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#DiabèteType1 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#DiabèteType1">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Diabète"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#DiabèteType2 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#DiabèteType2">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Diabète"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#DiététicienneLaurent -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#DiététicienneLaurent">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProfessionnelDeSanté"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#DiététicienneMoreau -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#DiététicienneMoreau">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProfessionnelDeSanté"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#DrGarcia -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#DrGarcia">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProfessionnelDeSanté"/>
+        <nutrition:Conseille rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#JeanDupont"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#DrLeroy -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#DrLeroy">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProfessionnelDeSanté"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#DrMartin -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#DrMartin">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProfessionnelDeSanté"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#DrPetit -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#DrPetit">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProfessionnelDeSanté"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#DrSimon -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#DrSimon">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProfessionnelDeSanté"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#DéjeunerProtéiné -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#DéjeunerProtéiné">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Repas"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#DînerLéger -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#DînerLéger">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Repas"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Escalade -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Escalade">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ActivitéPhysique"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Fer -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Fer">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Minéral"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Fibres -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Fibres">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Glucide"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#FitnessIntensif -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#FitnessIntensif">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Fitness"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#FloconsAvoine -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#FloconsAvoine">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#AlimentRicheEnFibres"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Fruits -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Fruits">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#GroupeAlimentaire"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#GagnerMasseMusculaire -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#GagnerMasseMusculaire">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Objectif"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#GlucidesComplexes -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#GlucidesComplexes">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Glucide"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#GrossesseTrimestre1 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#GrossesseTrimestre1">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Grossesse"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#GrossesseTrimestre2 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#GrossesseTrimestre2">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Grossesse"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#GrossesseTrimestre3 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#GrossesseTrimestre3">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Grossesse"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#HypertensionArtérielle -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#HypertensionArtérielle">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Hypertension"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#HypertensionLégère -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#HypertensionLégère">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Hypertension"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#IsabellePetit -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#IsabellePetit">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Personne"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#JeanDupont -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#JeanDupont">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Personne"/>
+        <nutrition:consomme rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Pomme"/>
+        <nutrition:nom>Jean Dupont</nutrition:nom>
+        <nutrition:poids rdf:datatype="http://www.w3.org/2001/XMLSchema#float">75.5</nutrition:poids>
+        <nutrition:âge rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">35</nutrition:âge>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Lait -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Lait">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Aliment"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Lentilles -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Lentilles">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#AlimentRicheEnFibres"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#LucBernard -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#LucBernard">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Personne"/>
+        <nutrition:Pratique rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#CourseÀPied"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Légumes -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Légumes">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#GroupeAlimentaire"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Magnésium -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Magnésium">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Minéral"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#MarcheRapide -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#MarcheRapide">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ActivitéPhysique"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#MarieMartin -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#MarieMartin">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Personne"/>
+        <nutrition:AProgramme rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProgrammePertePoids"/>
+        <nutrition:nom>Marie Martin</nutrition:nom>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#MichelRobert -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#MichelRobert">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Personne"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Natation -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Natation">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ActivitéPhysique"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#NicolasLeroy -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#NicolasLeroy">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Personne"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#NutritionnisteDubois -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#NutritionnisteDubois">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProfessionnelDeSanté"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#NutritionnisteRobert -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#NutritionnisteRobert">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProfessionnelDeSanté"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ObésitéLégère -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ObésitéLégère">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Obésité"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ObésitéModérée -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ObésitéModérée">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Obésité"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ObésitéSévère -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ObésitéSévère">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Obésité"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Oeuf -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Oeuf">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Aliment"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Oméga3 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Oméga3">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Lipide"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#PainBlanc -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#PainBlanc">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#AlimentÀIndexGlycémiqueÉlevé"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#PainComplet -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#PainComplet">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Aliment"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Perdre5kg -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Perdre5kg">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Objectif"/>
+        <nutrition:objectifBienEtre>Perte de poids</nutrition:objectifBienEtre>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#PetitDéjeunerÉquilibré -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#PetitDéjeunerÉquilibré">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Repas"/>
+        <nutrition:estComposéDe rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#FloconsAvoine"/>
+        <nutrition:estComposéDe rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Lait"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#PierreDurand -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#PierreDurand">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Personne"/>
+        <nutrition:aCondition rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#DiabèteType2"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Pilates -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Pilates">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ActivitéPhysique"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Pomme -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Pomme">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Aliment"/>
+        <nutrition:contient rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#VitamineC"/>
+        <nutrition:Calories rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">52</nutrition:Calories>
+        <nutrition:indexGlycémique rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">38</nutrition:indexGlycémique>
+        <nutrition:nom>Pomme</nutrition:nom>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#PouletGrillé -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#PouletGrillé">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Aliment"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProgrammeDétox -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProgrammeDétox">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProgrammeBienEtre"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProgrammeFitness -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProgrammeFitness">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProgrammeBienEtre"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProgrammeMaintien -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProgrammeMaintien">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProgrammeBienEtre"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProgrammeMasseMusculaire -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProgrammeMasseMusculaire">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProgrammeBienEtre"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProgrammePertePoids -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProgrammePertePoids">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProgrammeBienEtre"/>
+        <nutrition:Vise rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Perdre5kg"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProgrammeSportif -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProgrammeSportif">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProgrammeBienEtre"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProgrammeSénior -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProgrammeSénior">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProgrammeBienEtre"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProgrammeVégétarien -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProgrammeVégétarien">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProgrammeBienEtre"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProgrammeÉnergie -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProgrammeÉnergie">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProgrammeBienEtre"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProgrammeÉquilibré -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProgrammeÉquilibré">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProgrammeBienEtre"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProtéineWhey -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ProtéineWhey">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Protéine"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Randonnée -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Randonnée">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ActivitéPhysique"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#RenforcerOs -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#RenforcerOs">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Objectif"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#RepasDétox -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#RepasDétox">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Repas"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#RepasSansGluten -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#RepasSansGluten">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Repas"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#RepasSportif -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#RepasSportif">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Repas"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#RepasVégétarien -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#RepasVégétarien">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Repas"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#RizComplet -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#RizComplet">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Aliment"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#RéduireStress -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#RéduireStress">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Objectif"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#RégimeSansGluten -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#RégimeSansGluten">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#SansGluten"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#RégimeSansLactose -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#RégimeSansLactose">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#SansLactose"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#RégimeVégétarien -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#RégimeVégétarien">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Végétarien"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#SaladeÉpinards -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#SaladeÉpinards">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Recette"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Saumon -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Saumon">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Aliment"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#SmoothieVert -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#SmoothieVert">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Recette"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Soda -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Soda">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#AlimentÀIndexGlycémiqueÉlevé"/>
+        <nutrition:estContreIndiquéPour rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#DiabèteType2"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#SophieLaurent -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#SophieLaurent">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Personne"/>
+        <nutrition:aAllergie rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#AllergieArachides"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#StabiliserPoids -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#StabiliserPoids">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Objectif"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#SéanceMuscu -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#SéanceMuscu">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Musculation"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#TaiChi -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#TaiChi">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ActivitéPhysique"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#VitamineC -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#VitamineC">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Vitamine"/>
+        <nutrition:doseRecommandée rdf:datatype="http://www.w3.org/2001/XMLSchema#float">90.0</nutrition:doseRecommandée>
+        <nutrition:unitéDose>mg</nutrition:unitéDose>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#VitamineD -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#VitamineD">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Vitamine"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Vélo -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Vélo">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ActivitéPhysique"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#YogaDétente -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#YogaDétente">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Yoga"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Zinc -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Zinc">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Minéral"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Zumba -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#Zumba">
+        <rdf:type rdf:resource="http://www.semanticweb.org/user/ontologies/2025/8/nutrition#ActivitéPhysique"/>
+    </owl:NamedIndividual>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi -->
+

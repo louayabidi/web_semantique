@@ -1,59 +1,98 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from app.core.database import engine, Base
-from app.api import auth, aliments, recettes, sparql, crud_entities
-from app.services.ontology_loader import ontology_loader
+from pydantic import BaseModel
 import os
 
-app = FastAPI(
-    title="Nutrition Semantic API",
-    description="API sémantique pour les recommandations nutritionnelles basée sur une ontologie OWL",
-    version="1.0.0"
-)
+from fuseki_client import FusekiClient
+from sparql_queries import SparqlQueries
 
+app = FastAPI(title="Nutrition Semantic API")
+
+# CORS pour React
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
+    allow_origins=["http://localhost:3000"],
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-Base.metadata.create_all(bind=engine)
+# Clients
+fuseki = FusekiClient()
+sparql = SparqlQueries()
 
-try:
-    ontology_loader.load_ontology()
-    print("✓ Ontology loaded successfully at startup")
-except Exception as e:
-    print(f"⚠ Warning: Could not load ontology at startup: {e}")
+# Models
+class PersonneCreate(BaseModel):
+    nom: str
+    age: int
+    poids: float
 
-app.include_router(auth.router, prefix="/api")
-app.include_router(aliments.router, prefix="/api")
-app.include_router(recettes.router, prefix="/api")
-app.include_router(sparql.router, prefix="/api")
-app.include_router(crud_entities.router, prefix="/api")
+class AlimentCreate(BaseModel):
+    nom: str
+    calories: int
+
+class QuestionRequest(BaseModel):  # ← NOUVEAU MODEL
+    question: str
 
 @app.get("/")
-def root():
-    return {
-        "message": "API Sémantique Nutritionnelle",
-        "version": "1.0.0",
-        "endpoints": {
-            "auth": "/api/auth",
-            "aliments": "/api/aliments",
-            "recettes": "/api/recettes",
-            "sparql": "/api/semantic/sparql",
-            "nl_search": "/api/semantic/nl-search",
-            "ontology": "/api/semantic/ontology",
-            "docs": "/docs"
-        }
-    }
+def read_root():
+    return {"message": "API Nutrition Sémantique - Prête avec Fuseki!"}
 
-@app.get("/health")
-def health_check():
-    return {"status": "healthy"}
+# CRUD Personnes
+@app.get("/personnes")
+def get_personnes():
+    try:
+        query = sparql.get_all_personnes()
+        results = fuseki.execute_query(query)
+        return {"personnes": results["results"]["bindings"]}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/personnes")
+def create_personne(personne: PersonneCreate):
+    try:
+        personne_id = f"Personne_{personne.nom.replace(' ', '_')}"
+        query = sparql.create_personne(personne_id, personne.nom, personne.age, personne.poids)
+        success = fuseki.execute_update(query)
+        return {"message": "Personne créée", "id": personne_id}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+# CRUD Aliments
+@app.get("/aliments")
+def get_aliments():
+    try:
+        query = sparql.get_all_aliments()
+        results = fuseki.execute_query(query)
+        return {"aliments": results["results"]["bindings"]}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/aliments")
+def create_aliment(aliment: AlimentCreate):
+    try:
+        aliment_id = f"Aliment_{aliment.nom.replace(' ', '_')}"
+        query = sparql.create_aliment(aliment_id, aliment.nom, aliment.calories)
+        success = fuseki.execute_update(query)
+        return {"message": "Aliment créé", "id": aliment_id}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+# Recherche sémantique - CORRIGÉE
+@app.post("/recherche")
+def recherche_semantique(request: QuestionRequest):  # ← CORRECTION ICI
+    try:
+        from ai_translator_simple import SimpleQueryTranslator
+        translator = SimpleQueryTranslator()
+        sparql_query = translator.question_to_sparql(request.question)  # ← request.question
+        results = fuseki.execute_query(sparql_query)
+        return {
+            "question": request.question,  # ← request.question
+            "sparql_query": sparql_query,
+            "results": results["results"]["bindings"]
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
     import uvicorn
-    port = int(os.getenv("API_PORT", 8000))
-    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=True)
+    uvicorn.run(app, host="0.0.0.0", port=8000)
