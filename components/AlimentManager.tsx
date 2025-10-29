@@ -82,8 +82,9 @@ export default function AlimentManager() {
   }
 
   const handleDelete = async (id: string) => {
+    const rawId = id.replace(/^aliment_/, "")
     try {
-      const response = await fetch(`http://localhost:5000/api/aliments/${id}`, { method: "DELETE" })
+      const response = await fetch(`http://localhost:5000/api/aliments/${rawId}`, { method: "DELETE" })
       if (response.ok) fetchAliments()
     } catch (error) {
       setError(`Erreur: ${error instanceof Error ? error.message : "Erreur inconnue"}`)
@@ -98,7 +99,8 @@ export default function AlimentManager() {
       teneurFibres: aliment.teneurFibres?.value || "",
       teneurSodium: aliment.teneurSodium?.value || "",
     })
-    setEditingId(aliment.id.value)
+    const rawId = aliment.id.value.replace(/^aliment_/, "")
+    setEditingId(rawId)
   }
 
   return (
