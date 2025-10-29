@@ -86,27 +86,29 @@ export default function PersonneManager() {
   }
 
   const handleDelete = async (id: string) => {
-    try {
-      const response = await fetch(`http://localhost:5000/api/personnes/${id}`, { method: "DELETE" })
-      if (response.ok) {
-        fetchPersonnes()
-      }
-    } catch (error) {
-      console.error("[v0] Error deleting personne:", error)
-      setError(`Erreur: ${error instanceof Error ? error.message : "Erreur inconnue"}`)
-    }
+  const rawId = id.replace(/^personne_/, "")
+  try {
+    const response = await fetch(`http://localhost:5000/api/personnes/${rawId}`, { method: "DELETE" })
+    if (response.ok) fetchPersonnes()
+  } catch (error) {
+    console.error("[v0] Error deleting personne:", error)
   }
+}
 
   const handleEdit = (personne: Personne) => {
-    setFormData({
-      nom: personne.nom.value,
-      age: personne["âge"].value,
-      poids: personne.poids.value,
-      taille: personne.taille.value,
-      objectifPoids: personne.objectifPoids?.value || "",
-    })
-    setEditingId(personne.id.value)
-  }
+  setFormData({
+    nom: personne.nom.value,
+    age: personne["âge"].value,
+    poids: personne.poids.value,
+    taille: personne.taille.value,
+    objectifPoids: personne.objectifPoids?.value || "",
+  })
+
+  
+  const rawId = personne.id.value.replace(/^personne_/, "")
+  setEditingId(rawId)
+}
+
 
   return (
     <div className="space-y-6">

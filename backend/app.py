@@ -61,13 +61,10 @@ def check_fuseki_connection():
         print(f"[v0] Fuseki connection error: {str(e)}")
         return False
 
-def generate_uri(entity_type, entity_id=None):
-    """Generate a URI for an entity"""
-    if entity_id is None:
-        entity_id = str(uuid.uuid4())
+def generate_uri(entity_type, entity_id):
+    """Generate a deterministic URI for an entity"""
     safe_id = quote(str(entity_id), safe='')
     return f"{ONTOLOGY_PREFIX}{entity_type.lower()}_{safe_id}"
-
 
 
 def sparql_update(query):
@@ -165,9 +162,15 @@ def create_personne():
     """Create a new person"""
     try:
         data = request.json
-        person_id = data.get('id', f"personne_{uuid.uuid4().hex[:8]}")
+        
+        # Generate a stable person_id
+        person_id = data.get('id')
+        if not person_id:
+            person_id = uuid.uuid4().hex[:8]  # short UUID only
+        
         person_uri = generate_uri("personne", person_id)
         
+        # Build your triples
         nom_val = build_sparql_value(data.get('nom', 'Unknown'), 'string')
         age_val = build_sparql_value(data.get('âge', 0), 'integer')
         poids_val = build_sparql_value(data.get('poids', 0.0), 'float')
@@ -186,22 +189,22 @@ def create_personne():
         
         triples += " ."
         
-        update_query = f"""
+        insert_query = f"""
         PREFIX nutrition: <{ONTOLOGY_PREFIX}>
         INSERT DATA {{
             {triples}
         }}
         """
         
-        success, error = sparql_update(update_query)
+        success, error = sparql_update(insert_query)
+        
         if success:
+            # ✅ This is the correct place to return the ID to the frontend
             return jsonify({"success": True, "id": person_id}), 201
         else:
             return jsonify({"success": False, "error": error}), 400
-    except ValueError as e:
-        return jsonify({"success": False, "error": f"Invalid data format: {str(e)}"}), 400
+        
     except Exception as e:
-        print(f"[v0] Error creating personne: {str(e)}")
         return jsonify({"success": False, "error": str(e)}), 400
 
 @app.route('/api/personnes/<person_id>', methods=['PUT'])
@@ -250,11 +253,15 @@ def update_personne(person_id):
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 400
 
+
+
 @app.route('/api/personnes/<person_id>', methods=['DELETE'])
 def delete_personne(person_id):
     """Delete a person"""
     try:
+        print("DELETE PERSONNE CALLED WITH:", person_id)
         person_uri = generate_uri("personne", person_id)
+        print("PERSON URI TO DELETE:", person_uri)
         delete_query = f"""
         PREFIX nutrition: <{ONTOLOGY_PREFIX}>
         DELETE {{ <{person_uri}> ?p ?o }}
@@ -290,7 +297,10 @@ def create_aliment():
     """Create a new food"""
     try:
         data = request.json
-        aliment_id = data.get('id', f"aliment_{uuid.uuid4().hex[:8]}")
+        aliment_id = data.get('id')
+        if not aliment_id:
+            aliment_id = uuid.uuid4().hex[:8]  # short UUID only
+        
         aliment_uri = generate_uri("aliment", aliment_id)
         
         nom_val = build_sparql_value(data.get('nom', 'Unknown'), 'string')
@@ -416,9 +426,12 @@ def create_activite():
     """Create a new physical activity"""
     try:
         data = request.json
-        activite_id = data.get('id', f"activite_{uuid.uuid4().hex[:8]}")
-        activite_uri = generate_uri("activite", activite_id)
         
+        activite_id = data.get('id')
+        if not activite_id:
+            activite_id = uuid.uuid4().hex[:8]  # short UUID only
+        
+        activite_uri = generate_uri("activite", activite_id)
         nom_val = build_sparql_value(data.get('nom', 'Unknown'), 'string')
         dureeActivite_val = build_sparql_value(data.get('dureeActivite', 0), 'integer')
         
@@ -530,7 +543,11 @@ def create_nutriment():
     """Create a new nutrient"""
     try:
         data = request.json
-        nutriment_id = data.get('id', f"nutriment_{uuid.uuid4().hex[:8]}")
+        
+        nutriment_id = data.get('id')
+        if not nutriment_id:
+            nutriment_id = uuid.uuid4().hex[:8]  # short UUID only
+        
         nutriment_uri = generate_uri("nutriment", nutriment_id)
         
         nom_val = build_sparql_value(data.get('nom', 'Unknown'), 'string')
@@ -555,6 +572,48 @@ def create_nutriment():
             return jsonify({"success": True, "id": nutriment_id}), 201
         else:
             return jsonify({"success": False, "error": error}), 400
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 400
+
+@app.route('/api/nutriments/<nutriment_id>', methods=['PUT'])
+def update_nutriment(nutriment_id):
+    """Update a nutriment"""
+    try:
+        data = request.json
+        nutriment_uri = generate_uri("nutriment", nutriment_id)
+        print("UPDATE NUTRIMENT URI:", nutriment_uri)
+
+        # Delete old data
+        delete_query = f"""
+        PREFIX nutrition: <{ONTOLOGY_PREFIX}>
+        DELETE {{ <{nutriment_uri}> ?p ?o }}
+        WHERE {{ <{nutriment_uri}> ?p ?o }}
+        """
+        sparql_update(delete_query)
+
+        # Insert new data
+        nom_val = build_sparql_value(data.get('nom', 'Unknown'), 'string')
+        dose_val = build_sparql_value(data.get('doseRecommandée', 0.0), 'float')
+        unite_val = build_sparql_value(data.get('unitéDose', 'mg'), 'string')
+
+        triples = f"""
+            <{nutriment_uri}> a nutrition:Nutriment ;
+                               nutrition:nom {nom_val} ;
+                               nutrition:doseRecommandée {dose_val} ;
+                               nutrition:unitéDose {unite_val} .
+        """
+
+        insert_query = f"""
+        PREFIX nutrition: <{ONTOLOGY_PREFIX}>
+        INSERT DATA {{
+            {triples}
+        }}
+        """
+
+        success, error = sparql_update(insert_query)
+        print("UPDATE NUTRIMENT CALLED WITH:", nutriment_id)
+        print("REQUEST JSON:", request.json)
+        return jsonify({"success": success, "error": error if not success else ""})
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 400
 
@@ -594,7 +653,10 @@ def create_condition():
     """Create a new medical condition"""
     try:
         data = request.json
-        condition_id = data.get('id', f"condition_{uuid.uuid4().hex[:8]}")
+        condition_id = data.get('id')
+        if not condition_id:
+            condition_id = uuid.uuid4().hex[:8]  # short UUID only
+        
         condition_uri = generate_uri("condition", condition_id)
         
         nom_val = build_sparql_value(data.get('nom', 'Unknown'), 'string')
@@ -617,6 +679,29 @@ def create_condition():
             return jsonify({"success": False, "error": error}), 400
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 400
+@app.route('/api/conditions/<condition_id>', methods=['PUT'])
+def update_condition(condition_id):
+    """Update a medical condition safely"""
+    try:
+        data = request.json
+        condition_uri = generate_uri("condition", condition_id)
+        nom_val = build_sparql_value(data.get('nom', 'Unknown'), 'string')
+
+        update_query = f"""
+        PREFIX nutrition: <{ONTOLOGY_PREFIX}>
+        DELETE {{ <{condition_uri}> nutrition:nom ?oldNom }}
+        INSERT {{ <{condition_uri}> nutrition:nom {nom_val} }}
+        WHERE {{ <{condition_uri}> nutrition:nom ?oldNom }}
+        """
+
+        success, error = sparql_update(update_query)
+        print("UPDATE CONDITION CALLED WITH:", condition_id)
+        print("REQUEST JSON:", data)
+        return jsonify({"success": success, "error": error if not success else ""})
+
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 400
+
 
 @app.route('/api/conditions/<condition_id>', methods=['DELETE'])
 def delete_condition(condition_id):
@@ -680,6 +765,49 @@ def create_allergie():
             return jsonify({"success": False, "error": error}), 400
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 400
+    
+@app.route('/api/allergies/<allergie_id>', methods=['PUT'])
+def update_allergie(allergie_id):
+    """Update an allergie"""
+    try:
+        data = request.json
+        allergie_uri = generate_uri("allergie", allergie_id)
+        print("UPDATE ALLERGIE URI:", allergie_uri)
+
+        # Delete old data
+        delete_query = f"""
+        PREFIX nutrition: <{ONTOLOGY_PREFIX}>
+        DELETE {{ <{allergie_uri}> ?p ?o }}
+        WHERE {{ <{allergie_uri}> ?p ?o }}
+        """
+        sparql_update(delete_query)
+
+        # Insert new data
+        nom_val = build_sparql_value(data.get('nom', 'Unknown'), 'string')
+        type_val = build_sparql_value(data.get('typeAllergie', 'Inconnu'), 'string')
+
+        triples = f"""
+            <{allergie_uri}> a nutrition:Allergie ;
+                             nutrition:nom {nom_val} ;
+                             nutrition:typeAllergie {type_val} .
+        """
+
+        insert_query = f"""
+        PREFIX nutrition: <{ONTOLOGY_PREFIX}>
+        INSERT DATA {{
+            {triples}
+        }}
+        """
+        print("Triples to insert:", triples)
+
+        success, error = sparql_update(insert_query)
+        print("UPDATE ALLERGIE CALLED WITH:", allergie_id)
+        print("REQUEST JSON:", request.json)
+        return jsonify({"success": success, "error": error if not success else ""})
+
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 400
+
 
 @app.route('/api/allergies/<allergie_id>', methods=['DELETE'])
 def delete_allergie(allergie_id):
