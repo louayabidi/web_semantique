@@ -1244,6 +1244,10 @@ def build_sparql_from_natural_language(query_text):
     
     return base_query
 
+
+
+
+
 @app.route('/api/search-suggestions', methods=['GET'])
 def get_search_suggestions():
     """Get search suggestions based on common queries"""

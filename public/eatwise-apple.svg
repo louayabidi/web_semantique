@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="128" height="128" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="EatWise apple logo">
+  <title>EatWise - Pink Apple</title>
+  <defs>
+    <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#ff9ecf"/>
+      <stop offset="1" stop-color="#ff6fa3"/>
+    </linearGradient>
+  </defs>
+  <!-- background circle subtle -->
+  <rect width="64" height="64" rx="12" fill="none"/>
+  <!-- apple body -->
+  <path d="M32 12c-6 0-11 5-11 11 0 6 4 11 6 14 2 3 5 3 6 3s4 0 6-3c2-3 6-8 6-14 0-6-5-11-11-11-2 0-4 1-6 1s-4-1-6-1z" fill="url(#g)" stroke="#ff3b8c" stroke-width="0.6"/>
+  <!-- leaf -->
+  <path d="M40 10c3 1 5 3 5 5-3 1-5 1-8 0 1-2 1-4 3-5z" fill="#66d17a" stroke="#48b45a" stroke-width="0.4"/>
+  <!-- shine -->
+  <path d="M25 17c-1 2-1 4 1 6 2 2 4 1 5 0s1-3 0-5c-1-2-5-3-6-1z" fill="rgba(255,255,255,0.5)"/>
+  <!-- subtle bite mark -->
+  <path d="M38 24c1 1 0 2-1 2-1 0-2-1-1-2 1-2 2-1 2 0z" fill="#ffe6f2" opacity="0.8"/>
+</svg>
