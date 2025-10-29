@@ -710,7 +710,9 @@ def get_objectifs():
     }}
     """
     results = sparql_query(query)
-    return jsonify(results.get("results", {}).get("bindings", []))
+    bindings = results.get("results", {}).get("bindings", [])
+    print("[DEBUG] SPARQL bindings:", bindings)
+    return jsonify(bindings)
 
 @app.route('/api/objectifs', methods=['POST'])
 def create_objectif():
@@ -740,21 +742,51 @@ def create_objectif():
             return jsonify({"success": False, "error": error}), 400
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 400
-
+def clean_objectif_id(objectif_id):
+    while objectif_id.startswith("objectif_objectif_"):
+        objectif_id = objectif_id[len("objectif_"):]
+    return objectif_id
 @app.route('/api/objectifs/<objectif_id>', methods=['DELETE'])
 def delete_objectif(objectif_id):
     """Delete an objective"""
     try:
-        objectif_uri = generate_uri("objectif", objectif_id)
+        objectif_uri = generate_uri("objectif", clean_objectif_id(objectif_id))
         delete_query = f"""
         PREFIX nutrition: <{ONTOLOGY_PREFIX}>
         DELETE {{ <{objectif_uri}> ?p ?o }}
         WHERE {{ <{objectif_uri}> ?p ?o }}
         """
+        print("[DEBUG] SPARQL Delete:", delete_query)
         success, error = sparql_update(delete_query)
         return jsonify({"success": success, "error": error if not success else ""})
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 400
+
+
+@app.route('/api/objectifs/<objectif_id>', methods=['PUT'])
+def update_objectif(objectif_id):
+    try:
+        data = request.get_json()
+        print(f"[DEBUG] Data reçue pour {objectif_id}:", data)
+
+        new_name = data.get("nom")
+        if not new_name:
+            return jsonify({"success": False, "error": "Nom manquant"}), 400
+
+        objectif_uri = generate_uri("objectif", clean_objectif_id(objectif_id))
+        update_query = f"""
+PREFIX nutrition: <{ONTOLOGY_PREFIX}>
+DELETE {{ <{objectif_uri}> nutrition:nom ?oldName }}
+INSERT {{ <{objectif_uri}> nutrition:nom "{new_name}" }}
+WHERE {{ <{objectif_uri}> nutrition:nom ?oldName }}
+"""
+        print("[DEBUG] SPARQL Update:", update_query)
+        success, error = sparql_update(update_query)
+        return jsonify({"success": success, "error": error if not success else ""})
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 400
+
+
 
 # ==================== RECETTE CRUD ====================
 
@@ -784,11 +816,18 @@ def create_recette():
         recette_uri = generate_uri("recette", recette_id)
         
         nom_val = build_sparql_value(data.get('nom', 'Unknown'), 'string')
-        
+        description_val = build_sparql_value(data.get('description', 'Unknown'), 'string')
+        temps_val = build_sparql_value(data.get('tempsPréparation', 'Unknown'), 'integer')
+        niveau_val = build_sparql_value(data.get('niveauDifficulté', 'Unknown'), 'string')
+
         triples = f"""
             <{recette_uri}> a nutrition:Recette ;
-                            nutrition:nom {nom_val} ."""
-        
+                            nutrition:nom {nom_val} ;
+                            nutrition:description {description_val} ;
+                            nutrition:tempsPréparation {temps_val} ;
+                            nutrition:niveauDifficulté {niveau_val} .
+        """
+
         update_query = f"""
         PREFIX nutrition: <{ONTOLOGY_PREFIX}>
         INSERT DATA {{
@@ -803,12 +842,16 @@ def create_recette():
             return jsonify({"success": False, "error": error}), 400
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 400
-
+def clean_recette_id(recette_id):
+    """Supprime les doublons de 'recette_' dans l'ID"""
+    while recette_id.startswith("recette_recette_"):
+        recette_id = recette_id[len("recette_"):]
+    return recette_id
 @app.route('/api/recettes/<recette_id>', methods=['DELETE'])
 def delete_recette(recette_id):
     """Delete a recipe"""
     try:
-        recette_uri = generate_uri("recette", recette_id)
+        recette_uri = generate_uri("recette", clean_recette_id(recette_id))
         delete_query = f"""
         PREFIX nutrition: <{ONTOLOGY_PREFIX}>
         DELETE {{ <{recette_uri}> ?p ?o }}
@@ -818,6 +861,54 @@ def delete_recette(recette_id):
         return jsonify({"success": success, "error": error if not success else ""})
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 400
+@app.route('/api/recettes/<recette_id>', methods=['PUT'])
+def update_recette(recette_id):
+    try:
+        data = request.get_json()
+        recette_uri = generate_uri("recette", clean_recette_id(recette_id))
+
+        # Mandatory
+        new_name = data.get("nom")
+        if not new_name:
+            return jsonify({"success": False, "error": "Nom manquant"}), 400
+
+        # Optional fields
+        new_description = data.get("description")
+        new_temps = data.get("tempsPréparation")
+        new_niveau = data.get("niveauDifficulté")
+
+        # Update name (always exists)
+        name_update = f"""
+        PREFIX nutrition: <{ONTOLOGY_PREFIX}>
+        DELETE {{ <{recette_uri}> nutrition:nom ?oldName }}
+        INSERT {{ <{recette_uri}> nutrition:nom {build_sparql_value(new_name, 'string')} }}
+        WHERE {{ <{recette_uri}> nutrition:nom ?oldName }}
+        """
+        sparql_update(name_update)
+
+        # Optional updates (use INSERT DATA, no DELETE needed)
+        optional_triples = []
+        if new_description is not None:
+            optional_triples.append(f"<{recette_uri}> nutrition:description {build_sparql_value(new_description, 'string')} .")
+        if new_temps is not None:
+            optional_triples.append(f"<{recette_uri}> nutrition:tempsPréparation {build_sparql_value(new_temps, 'integer')} .")
+        if new_niveau is not None:
+            optional_triples.append(f"<{recette_uri}> nutrition:niveauDifficulté {build_sparql_value(new_niveau, 'string')} .")
+
+        if optional_triples:
+            insert_data = f"""
+            PREFIX nutrition: <{ONTOLOGY_PREFIX}>
+            INSERT DATA {{
+                {' '.join(optional_triples)}
+            }}
+            """
+            sparql_update(insert_data)
+
+        return jsonify({"success": True}), 200
+
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 400
+
 
 # ==================== REPAS CRUD ====================
 
@@ -865,20 +956,54 @@ def create_repas():
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 400
 
+def clean_repas_id(repas_id):
+    """Supprime les doublons de 'repas_' dans l'ID"""
+    while repas_id.startswith("repas_repas_"):
+        repas_id = repas_id[len("repas_"):]
+    return repas_id
+
 @app.route('/api/repas/<repas_id>', methods=['DELETE'])
 def delete_repas(repas_id):
     """Delete a meal"""
     try:
-        repas_uri = generate_uri("repas", repas_id)
+        clean_id = clean_repas_id(repas_id)
+        repas_uri = generate_uri("repas", clean_id)  # ici "repas", pas "repas_id"
         delete_query = f"""
         PREFIX nutrition: <{ONTOLOGY_PREFIX}>
         DELETE {{ <{repas_uri}> ?p ?o }}
         WHERE {{ <{repas_uri}> ?p ?o }}
         """
+        print("[DEBUG] SPARQL Delete:", delete_query)
         success, error = sparql_update(delete_query)
         return jsonify({"success": success, "error": error if not success else ""})
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 400
+@app.route('/api/repas/<repas_id>', methods=['PUT'])
+def update_repas(repas_id):
+    """Update a meal"""
+    try:
+        data = request.get_json()
+        print(f"[DEBUG] Data reçue pour {repas_id}:", data)
+
+        new_name = data.get("nom")
+        if not new_name:
+            return jsonify({"success": False, "error": "Nom manquant"}), 400
+
+        clean_id = clean_repas_id(repas_id)   # <--- nettoyage
+        repas_uri = generate_uri("repas", clean_id)
+
+        update_query = f"""
+        PREFIX nutrition: <{ONTOLOGY_PREFIX}>
+        DELETE {{ <{repas_uri}> nutrition:nom ?oldName }}
+        INSERT {{ <{repas_uri}> nutrition:nom "{new_name}" }}
+        WHERE {{ <{repas_uri}> nutrition:nom ?oldName }}
+        """
+        print("[DEBUG] SPARQL Update:", update_query)
+        success, error = sparql_update(update_query)
+        return jsonify({"success": success, "error": error if not success else ""})
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 400
+
 
 # ==================== PROGRAMME BIEN-ÊTRE CRUD ====================
 

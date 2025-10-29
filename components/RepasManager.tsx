@@ -1,13 +1,14 @@
 "use client"
 
-import type React from "react"
+import React from "react"
 
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Plus, Trash2 } from "lucide-react"
+import { Plus, Trash2,Edit2 } from "lucide-react"
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "./ui/dialog"
 
 interface Repas {
   id: { value: string }
@@ -16,6 +17,12 @@ interface Repas {
 }
 
 export default function RepasManager() {
+  
+  const [open, setOpen] = useState(false)
+  const [selected, setSelected] = useState<string | null>(null)
+  const [newName, setNewName] = useState("")
+  const [newType, setNewType] = useState("")
+
   const [repas, setRepas] = useState<Repas[]>([])
   const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
@@ -58,6 +65,20 @@ export default function RepasManager() {
       }
     } catch (error) {
       console.error("[v0] Error submitting form:", error)
+    }
+  }
+  const handleEdit = async (id: string, newName: string) => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/repas/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nom: newName }),
+      })
+      if (response.ok) {
+        fetchRepas()
+      }
+    } catch (error) {
+      console.error("[v0] Error editing repas:", error)
     }
   }
 
@@ -117,16 +138,78 @@ export default function RepasManager() {
           ) : (
             <div className="space-y-2">
               {repas.map((r) => (
-                <div key={r.id.value} className="flex justify-between items-center p-3 bg-slate-50 rounded-lg">
-                  <div>
-                    <p className="font-semibold">{r.nom.value}</p>
-                    {r.type && <p className="text-sm text-slate-600">{r.type.value}</p>}
-                  </div>
-                  <Button variant="ghost" size="sm" onClick={() => handleDelete(r.id.value)}>
-                    <Trash2 className="w-4 h-4" />
-                  </Button>
-                </div>
-              ))}
+  <React.Fragment key={r.id.value}>
+    <div className="flex justify-between items-center p-3 bg-slate-50 rounded-lg">
+      <div>
+        <p className="font-semibold">{r.nom.value}</p>
+        {r.type && <p className="text-sm text-slate-600">{r.type.value}</p>}
+      </div>
+      <div className="flex gap-2">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => {
+            setSelected(r.id.value)
+            setNewName(r.nom.value)
+            setOpen(true)
+          }}
+        >
+          <Edit2 className="w-4 h-4" />
+        </Button>
+        <Button variant="ghost" size="sm" onClick={() => handleDelete(r.id.value)}>
+          <Trash2 className="w-4 h-4" />
+        </Button>
+      </div>
+    </div>
+  </React.Fragment>
+))}
+
+{/* Dialog hors du map, unique pour tous les repas */}
+<Dialog open={open} onOpenChange={setOpen}>
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle>Éditer le Repas</DialogTitle>
+    </DialogHeader>
+    <div className="grid gap-4 py-4">
+      <div className="grid gap-2">
+        <Label htmlFor="name">Nom du Repas</Label>
+        <Input
+          id="name"
+          value={newName}
+          onChange={(e) => setNewName(e.target.value)}
+        />
+        <Label htmlFor="type">Type du Repas</Label>
+        <Input
+          id="type"
+          value={newType}
+          onChange={(e) => setNewType(e.target.value)}
+        />
+      </div>
+    </div>
+    <DialogFooter>
+      <Button
+        onClick={() => {
+          if (selected && newName.trim() !== "") {
+            handleEdit(selected, newName)
+            setOpen(false)
+            setSelected(null)
+            setNewName("")
+          }
+        }}
+      >
+        Sauvegarder
+      </Button>
+    </DialogFooter>
+  </DialogContent>
+</Dialog>
+
+
+                
+                
+                
+                
+                
+
             </div>
           )}
         </CardContent>
