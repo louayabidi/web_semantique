@@ -40,7 +40,7 @@ export default function ConditionManager() {
 
   const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault()
-  setError(null) // optional: add an error state if needed
+  setError(null)
 
   try {
     // Determine method and URL based on editingId
@@ -52,27 +52,35 @@ export default function ConditionManager() {
     const response = await fetch(url, {
       method,
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
+      body: JSON.stringify({
+        nom: formData.nom,
+      }),
     })
 
     if (response.ok) {
       // Reset form and editing state
+      console.log(response);
+      
       setFormData({ nom: "" })
       setEditingId(null)
       fetchConditions() // refresh list
     } else {
       const errorData = await response.json()
-      console.error("[v0] Error submitting condition:", errorData)
+      throw new Error(JSON.stringify(errorData))
     }
   } catch (error) {
-    console.error("[v0] Error submitting condition:", error)
+    setError(`Erreur: ${error instanceof Error ? error.message : "Erreur inconnue"}`)
   }
 }
 
 
+
+
   const handleDelete = async (id: string) => {
+        const rawId = id.replace(/^condition_/, "")
+
     try {
-      await fetch(`http://localhost:5000/api/conditions/${id}`, { method: "DELETE" })
+      await fetch(`http://localhost:5000/api/conditions/${rawId}`, { method: "DELETE" })
       fetchConditions()
     } catch (error) {
       console.error("[v0] Error deleting condition:", error)

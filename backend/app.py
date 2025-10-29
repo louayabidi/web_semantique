@@ -207,48 +207,52 @@ def create_personne():
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 400
 
-
-@app.route('/api/nutriments/<nutriment_id>', methods=['PUT'])
-def update_nutriment(nutriment_id):
-    """Update a nutriment"""
+@app.route('/api/personnes/<person_id>', methods=['PUT'])
+def update_personne(person_id):
+    """Update a person"""
     try:
         data = request.json
-        nutriment_uri = generate_uri("nutriment", nutriment_id)
-        print("UPDATE NUTRIMENT URI:", nutriment_uri)
-
+        person_uri = generate_uri("personne", person_id)
+        
         # Delete old data
         delete_query = f"""
         PREFIX nutrition: <{ONTOLOGY_PREFIX}>
-        DELETE {{ <{nutriment_uri}> ?p ?o }}
-        WHERE {{ <{nutriment_uri}> ?p ?o }}
+        DELETE {{ <{person_uri}> ?p ?o }}
+        WHERE {{ <{person_uri}> ?p ?o }}
         """
         sparql_update(delete_query)
-
+        
         # Insert new data
         nom_val = build_sparql_value(data.get('nom', 'Unknown'), 'string')
-        dose_val = build_sparql_value(data.get('doseRecommandée', 0.0), 'float')
-        unite_val = build_sparql_value(data.get('unitéDose', 'mg'), 'string')
-
+        age_val = build_sparql_value(data.get('âge', 0), 'integer')
+        poids_val = build_sparql_value(data.get('poids', 0.0), 'float')
+        taille_val = build_sparql_value(data.get('taille', 0.0), 'float')
+        
         triples = f"""
-            <{nutriment_uri}> a nutrition:Nutriment ;
-                               nutrition:nom {nom_val} ;
-                               nutrition:doseRecommandée {dose_val} ;
-                               nutrition:unitéDose {unite_val} .
-        """
-
+            <{person_uri}> a nutrition:Personne ;
+                           nutrition:nom {nom_val} ;
+                           nutrition:âge {age_val} ;
+                           nutrition:poids {poids_val} ;
+                           nutrition:taille {taille_val}"""
+        
+        if data.get('objectifPoids'):
+            objectifPoids_val = build_sparql_value(data.get('objectifPoids'), 'float')
+            triples += f" ;\n                           nutrition:objectifPoids {objectifPoids_val}"
+        
+        triples += " ."
+        
         insert_query = f"""
         PREFIX nutrition: <{ONTOLOGY_PREFIX}>
         INSERT DATA {{
             {triples}
         }}
         """
-
+        
         success, error = sparql_update(insert_query)
-        print("UPDATE NUTRIMENT CALLED WITH:", nutriment_id)
-        print("REQUEST JSON:", request.json)
         return jsonify({"success": success, "error": error if not success else ""})
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 400
+
 
 
 @app.route('/api/personnes/<person_id>', methods=['DELETE'])
@@ -571,6 +575,48 @@ def create_nutriment():
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 400
 
+@app.route('/api/nutriments/<nutriment_id>', methods=['PUT'])
+def update_nutriment(nutriment_id):
+    """Update a nutriment"""
+    try:
+        data = request.json
+        nutriment_uri = generate_uri("nutriment", nutriment_id)
+        print("UPDATE NUTRIMENT URI:", nutriment_uri)
+
+        # Delete old data
+        delete_query = f"""
+        PREFIX nutrition: <{ONTOLOGY_PREFIX}>
+        DELETE {{ <{nutriment_uri}> ?p ?o }}
+        WHERE {{ <{nutriment_uri}> ?p ?o }}
+        """
+        sparql_update(delete_query)
+
+        # Insert new data
+        nom_val = build_sparql_value(data.get('nom', 'Unknown'), 'string')
+        dose_val = build_sparql_value(data.get('doseRecommandée', 0.0), 'float')
+        unite_val = build_sparql_value(data.get('unitéDose', 'mg'), 'string')
+
+        triples = f"""
+            <{nutriment_uri}> a nutrition:Nutriment ;
+                               nutrition:nom {nom_val} ;
+                               nutrition:doseRecommandée {dose_val} ;
+                               nutrition:unitéDose {unite_val} .
+        """
+
+        insert_query = f"""
+        PREFIX nutrition: <{ONTOLOGY_PREFIX}>
+        INSERT DATA {{
+            {triples}
+        }}
+        """
+
+        success, error = sparql_update(insert_query)
+        print("UPDATE NUTRIMENT CALLED WITH:", nutriment_id)
+        print("REQUEST JSON:", request.json)
+        return jsonify({"success": success, "error": error if not success else ""})
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 400
+
 @app.route('/api/nutriments/<nutriment_id>', methods=['DELETE'])
 def delete_nutriment(nutriment_id):
     """Delete a nutrient"""
@@ -607,7 +653,10 @@ def create_condition():
     """Create a new medical condition"""
     try:
         data = request.json
-        condition_id = data.get('id', f"condition_{uuid.uuid4().hex[:8]}")
+        condition_id = data.get('id')
+        if not condition_id:
+            condition_id = uuid.uuid4().hex[:8]  # short UUID only
+        
         condition_uri = generate_uri("condition", condition_id)
         
         nom_val = build_sparql_value(data.get('nom', 'Unknown'), 'string')
@@ -630,6 +679,29 @@ def create_condition():
             return jsonify({"success": False, "error": error}), 400
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 400
+@app.route('/api/conditions/<condition_id>', methods=['PUT'])
+def update_condition(condition_id):
+    """Update a medical condition safely"""
+    try:
+        data = request.json
+        condition_uri = generate_uri("condition", condition_id)
+        nom_val = build_sparql_value(data.get('nom', 'Unknown'), 'string')
+
+        update_query = f"""
+        PREFIX nutrition: <{ONTOLOGY_PREFIX}>
+        DELETE {{ <{condition_uri}> nutrition:nom ?oldNom }}
+        INSERT {{ <{condition_uri}> nutrition:nom {nom_val} }}
+        WHERE {{ <{condition_uri}> nutrition:nom ?oldNom }}
+        """
+
+        success, error = sparql_update(update_query)
+        print("UPDATE CONDITION CALLED WITH:", condition_id)
+        print("REQUEST JSON:", data)
+        return jsonify({"success": success, "error": error if not success else ""})
+
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 400
+
 
 @app.route('/api/conditions/<condition_id>', methods=['DELETE'])
 def delete_condition(condition_id):
@@ -693,6 +765,49 @@ def create_allergie():
             return jsonify({"success": False, "error": error}), 400
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 400
+    
+@app.route('/api/allergies/<allergie_id>', methods=['PUT'])
+def update_allergie(allergie_id):
+    """Update an allergie"""
+    try:
+        data = request.json
+        allergie_uri = generate_uri("allergie", allergie_id)
+        print("UPDATE ALLERGIE URI:", allergie_uri)
+
+        # Delete old data
+        delete_query = f"""
+        PREFIX nutrition: <{ONTOLOGY_PREFIX}>
+        DELETE {{ <{allergie_uri}> ?p ?o }}
+        WHERE {{ <{allergie_uri}> ?p ?o }}
+        """
+        sparql_update(delete_query)
+
+        # Insert new data
+        nom_val = build_sparql_value(data.get('nom', 'Unknown'), 'string')
+        type_val = build_sparql_value(data.get('typeAllergie', 'Inconnu'), 'string')
+
+        triples = f"""
+            <{allergie_uri}> a nutrition:Allergie ;
+                             nutrition:nom {nom_val} ;
+                             nutrition:typeAllergie {type_val} .
+        """
+
+        insert_query = f"""
+        PREFIX nutrition: <{ONTOLOGY_PREFIX}>
+        INSERT DATA {{
+            {triples}
+        }}
+        """
+        print("Triples to insert:", triples)
+
+        success, error = sparql_update(insert_query)
+        print("UPDATE ALLERGIE CALLED WITH:", allergie_id)
+        print("REQUEST JSON:", request.json)
+        return jsonify({"success": success, "error": error if not success else ""})
+
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 400
+
 
 @app.route('/api/allergies/<allergie_id>', methods=['DELETE'])
 def delete_allergie(allergie_id):
