@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  fuseki:
+    image: stain/jena-fuseki:latest
+    ports:
+      - "3030:3030"
+    environment:
+      FUSEKI_DATASET_1: nutrition
+      FUSEKI_ADMIN_PASSWORD: admin
+      FUSEKI_PASSWORD: password
+    volumes:
+      - fuseki-data:/fuseki
+    command: /jena-fuseki/fuseki-server --mem /nutrition
+
+  backend:
+    build: .
+    ports:
+      - "5000:5000"
+    depends_on:
+      - fuseki
+    environment:
+      FLASK_ENV: development
+      FUSEKI_URL: http://fuseki:3030
+
+  frontend:
+    image: node:18-alpine
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+    command: npm run dev
+    depends_on:
+      - backend
+
+volumes:
+  fuseki-data:
