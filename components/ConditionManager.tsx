@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Plus, Trash2 } from "lucide-react"
+import { Edit2, Plus, Trash2 } from "lucide-react"
 
 interface Condition {
   id: { value: string }
@@ -18,6 +18,8 @@ export default function ConditionManager() {
   const [conditions, setConditions] = useState<Condition[]>([])
   const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({ nom: "" })
+  const [editingId, setEditingId] = useState<string | null>(null)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     fetchConditions()
@@ -37,25 +39,36 @@ export default function ConditionManager() {
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    try {
-      const response = await fetch("http://localhost:5000/api/conditions", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      })
+  e.preventDefault()
+  setError(null) // optional: add an error state if needed
 
-      if (response.ok) {
-        setFormData({ nom: "" })
-        fetchConditions()
-      } else {
-        const error = await response.json()
-        console.error("[v0] Error:", error)
-      }
-    } catch (error) {
-      console.error("[v0] Error submitting form:", error)
+  try {
+    // Determine method and URL based on editingId
+    const method = editingId ? "PUT" : "POST"
+    const url = editingId
+      ? `http://localhost:5000/api/conditions/${editingId}`
+      : "http://localhost:5000/api/conditions"
+
+    const response = await fetch(url, {
+      method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    })
+
+    if (response.ok) {
+      // Reset form and editing state
+      setFormData({ nom: "" })
+      setEditingId(null)
+      fetchConditions() // refresh list
+    } else {
+      const errorData = await response.json()
+      console.error("[v0] Error submitting condition:", errorData)
     }
+  } catch (error) {
+    console.error("[v0] Error submitting condition:", error)
   }
+}
+
 
   const handleDelete = async (id: string) => {
     try {
@@ -65,6 +78,14 @@ export default function ConditionManager() {
       console.error("[v0] Error deleting condition:", error)
     }
   }
+  const handleEdit = (condition: Condition) => {
+  setFormData({
+    nom: condition.nom.value,
+  })
+  const rawId = condition.id.value.replace(/^condition_/, "")
+    setEditingId(rawId)
+}
+
 
   return (
     <div className="space-y-6">
@@ -84,10 +105,12 @@ export default function ConditionManager() {
                 required
               />
             </div>
+            <div className="flex gap-2">
             <Button type="submit" className="w-full">
               <Plus className="w-4 h-4 mr-2" />
-              Ajouter Condition
+              {editingId ? "Modifier" : "Ajouter"}
             </Button>
+            </div>
           </form>
         </CardContent>
       </Card>
@@ -104,9 +127,15 @@ export default function ConditionManager() {
               {conditions.map((c) => (
                 <div key={c.id.value} className="flex justify-between items-center p-3 bg-slate-50 rounded-lg">
                   <p className="font-semibold">{c.nom.value}</p>
+                  <div className="flex gap-2">
+                    <Button variant="outline" size="sm" onClick={() => handleEdit(c)}>
+                      <Edit2 className="w-4 h-4" />
+                    </Button>
                   <Button variant="ghost" size="sm" onClick={() => handleDelete(c.id.value)}>
                     <Trash2 className="w-4 h-4" />
                   </Button>
+                  
+                  </div>
                 </div>
               ))}
             </div>
