@@ -1064,11 +1064,13 @@ def create_repas():
         repas_uri = generate_uri("repas", repas_id)
         
         nom_val = build_sparql_value(data.get('nom', 'Unknown'), 'string')
+        type_val = build_sparql_value(data.get('type', 'Unknown'), 'string')
         
         triples = f"""
             <{repas_uri}> a nutrition:Repas ;
-                          nutrition:nom {nom_val} ."""
-        
+                          nutrition:nom {nom_val} ;
+                          nutrition:type {type_val} ."""
+
         update_query = f"""
         PREFIX nutrition: <{ONTOLOGY_PREFIX}>
         INSERT DATA {{
@@ -1114,21 +1116,38 @@ def update_repas(repas_id):
         print(f"[DEBUG] Data reçue pour {repas_id}:", data)
 
         new_name = data.get("nom")
+        new_type = data.get("type")
+
         if not new_name:
             return jsonify({"success": False, "error": "Nom manquant"}), 400
 
-        clean_id = clean_repas_id(repas_id)   # <--- nettoyage
+        clean_id = clean_repas_id(repas_id)
         repas_uri = generate_uri("repas", clean_id)
 
+        # --- Requête SPARQL correcte ---
         update_query = f"""
         PREFIX nutrition: <{ONTOLOGY_PREFIX}>
-        DELETE {{ <{repas_uri}> nutrition:nom ?oldName }}
-        INSERT {{ <{repas_uri}> nutrition:nom "{new_name}" }}
-        WHERE {{ <{repas_uri}> nutrition:nom ?oldName }}
+        PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+        DELETE {{
+            <{repas_uri}> nutrition:nom ?oldName .
+            <{repas_uri}> nutrition:type ?oldType .
+        }}
+        INSERT {{
+            <{repas_uri}> nutrition:nom "{new_name}"^^xsd:string .
+            {"<" + repas_uri + "> nutrition:type \"" + new_type + "\"^^xsd:string ." if new_type else ""}
+        }}
+        WHERE {{
+            OPTIONAL {{ <{repas_uri}> nutrition:nom ?oldName . }}
+            OPTIONAL {{ <{repas_uri}> nutrition:type ?oldType . }}
+        }}
         """
+
         print("[DEBUG] SPARQL Update:", update_query)
+
         success, error = sparql_update(update_query)
-        return jsonify({"success": success, "error": error if not success else ""})
+        return jsonify({"success": success, "error": error if not success else ""}), 200 if success else 400
+
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 400
 

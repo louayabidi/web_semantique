@@ -72,7 +72,7 @@ export default function RepasManager() {
       const response = await fetch(`http://localhost:5000/api/repas/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nom: newName }),
+        body: JSON.stringify({ nom: newName, type: newType }),
       })
       if (response.ok) {
         fetchRepas()
