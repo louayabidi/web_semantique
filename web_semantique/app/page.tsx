@@ -18,7 +18,8 @@ import PreferenceManager from "../components/PreferenceManager";
 import RecommandationManager from "@/components/RecommandationManager";
 import SearchPanel from "@/components/SearchPanel";
 import Dashboard from "@/components/Dashboard";
-
+import GestionRelationsAliment from "@/components/GestionRelationsAliment";
+import GestionRelationsPersonne from "@/components/GestionRelationsPersonne";
 export default function Home() {
   const { user, logout } = useAuth();
   const router = useRouter();
@@ -47,6 +48,8 @@ export default function Home() {
     { value: "preferences", label: "Préférences", component: <PreferenceManager /> },
     { value: "recommandations", label: "Recommandations", component: <RecommandationManager /> },
     { value: "search", label: "Recherche", component: <SearchPanel /> },
+    { value: "relationsAliment", label: "Relations Aliment", component: <GestionRelationsAliment /> },
+    { value: "relationsPersonne", label: "Relations Personne", component: <GestionRelationsPersonne /> },
   ];
 
   // Filter tabs based on role
