@@ -9,21 +9,9 @@ import os
 import uuid
 import re
 
-# ==================== IMPORTS SPAcy ====================
 import spacy
 from collections import defaultdict
-
-# Charger le modèle SpaCy
-try:
-    nlp = spacy.load("fr_core_news_sm")
-    print("✅ Modèle SpaCy français chargé avec succès")
-except OSError:
-    print("❌ Modèle français non trouvé. Téléchargez-le avec: python -m spacy download fr_core_news_sm")
-    nlp = None
-
-app = Flask(__name__)
-CORS(app)
-
+ONTOLOGY_PREFIX = "http://www.semanticweb.org/user/ontologies/2025/8/nutrition#"
 FUSEKI_URL = os.getenv("FUSEKI_URL", "http://localhost:3030")
 FUSEKI_USERNAME = os.getenv("FUSEKI_USERNAME", "admin")
 FUSEKI_PASSWORD = os.getenv("FUSEKI_PASSWORD", "admin")
@@ -31,8 +19,24 @@ DATASET_NAME = "nutrition"
 SPARQL_QUERY_ENDPOINT = f"{FUSEKI_URL}/{DATASET_NAME}/sparql"
 SPARQL_UPDATE_ENDPOINT = f"{FUSEKI_URL}/{DATASET_NAME}/update"
 
-ONTOLOGY_PREFIX = "http://www.semanticweb.org/user/ontologies/2025/8/nutrition#"
+# Charger le modèle SpaCy avec gestion d'erreur améliorée
+try:
+    nlp = spacy.load("fr_core_news_sm")
+    print("✅ Modèle SpaCy français chargé avec succès")
+except OSError:
+    try:
+        # Essayer de télécharger le modèle si absent
+        from spacy.cli import download
+        download("fr_core_news_sm")
+        nlp = spacy.load("fr_core_news_sm")
+        print("✅ Modèle SpaCy téléchargé et chargé")
+    except:
+        print("❌ Impossible de charger SpaCy, utilisation du mode fallback")
+        nlp = None
 
+# ==================== PARSER INTELLIGENT AVEC SPAcy ====================
+app = Flask(__name__)
+CORS(app)
 # ==================== PARSER INTELLIGENT AVEC SPAcy ====================
 
 # ==================== PARSER INTELLIGENT AVEC SPAcy ====================
@@ -307,8 +311,340 @@ class AdvancedNutritionQueryParser:
         }} LIMIT 20
         """
 
+class AdvancedNutritionQueryParser:
+    def __init__(self):
+        self.nlp = nlp
+        self.entity_keywords = {
+            "Personne": ["personne", "utilisateur", "patient", "client", "humain", "être", "âge", "poids", "taille"],
+            "Aliment": ["aliment", "nourriture", "fruit", "légume", "viande", "poisson", "produit", "calorie"],
+            "Recette": ["recette", "plat", "menu", "cuisine", "préparation", "ingrédient"],
+            "ActivitePhysique": ["activité", "sport", "exercice", "entraînement", "course", "marche"]
+        }
+        
+    def parse_query(self, query_text):
+        """Parse la requête avec analyse sémantique avancée"""
+        if self.nlp is None:
+            return self.fallback_parser(query_text)
+        
+        print(f"🔍 [SpaCy] Analyse de: '{query_text}'")
+        doc = self.nlp(query_text.lower())
+        
+        # Détection d'entité améliorée
+        entity_type = self.detect_entity_advanced(doc, query_text)
+        
+        # Analyse des critères
+        analysis = self.analyze_criteria_advanced(doc, entity_type, query_text)
+        
+        return self.build_sparql_query(entity_type, analysis, query_text)
+    
+    def detect_entity_advanced(self, doc, query_text):
+        """Détection d'entité avec scores pondérés"""
+        scores = defaultdict(int)
+        
+        # Score basé sur les mots-clés
+        for entity_type, keywords in self.entity_keywords.items():
+            for keyword in keywords:
+                if keyword in query_text.lower():
+                    scores[entity_type] += 2
+        
+        # Score basé sur l'analyse SpaCy
+        for token in doc:
+            if token.pos_ in ["NOUN", "PROPN"]:
+                if self.is_person_related(token):
+                    scores["Personne"] += 1
+                elif self.is_food_related(token):
+                    scores["Aliment"] += 1
+                elif self.is_recipe_related(token):
+                    scores["Recette"] += 1
+                elif self.is_activity_related(token):
+                    scores["ActivitePhysique"] += 1
+        
+        # Score basé sur le contexte
+        if any(word in query_text for word in ["âge", "ans", "vieux", "jeune", "poids", "kg", "taille", "cm"]):
+            scores["Personne"] += 3
+            
+        if any(word in query_text for word in ["calorie", "fibre", "nutrition", "protéine", "vitamine"]):
+            scores["Aliment"] += 2
+            
+        if any(word in query_text for word in ["cuisiner", "préparer", "ingrédients", "temps de préparation"]):
+            scores["Recette"] += 2
+            
+        if any(word in query_text for word in ["brûler", "sport", "exercice", "entraînement", "durée"]):
+            scores["ActivitePhysique"] += 2
+        
+        if scores:
+            best_entity = max(scores.items(), key=lambda x: x[1])
+            print(f"🎯 [SpaCy] Entité détectée: {best_entity[0]} (score: {best_entity[1]})")
+            return best_entity[0]
+        
+        return "Aliment"  # Par défaut
+    
+    def analyze_criteria_advanced(self, doc, entity_type, original_query):
+        """Analyse avancée des critères de recherche"""
+        analysis = {
+            'filters': [],
+            'additional_selects': [],
+            'additional_triples': [],
+            'order_by': "?nom",
+            'search_patterns': []
+        }
+        
+        # Configuration par type d'entité
+        if entity_type == "Personne":
+            analysis['additional_selects'].extend(["?âge", "?poids", "?taille"])
+            analysis['additional_triples'].extend([
+                "OPTIONAL { ?entity nutrition:âge ?âge }",
+                "OPTIONAL { ?entity nutrition:poids ?poids }", 
+                "OPTIONAL { ?entity nutrition:taille ?taille }"
+            ])
+            
+        elif entity_type == "Aliment":
+            analysis['additional_selects'].extend(["?calories", "?indexGlycemique"])
+            analysis['additional_triples'].extend([
+                "OPTIONAL { ?entity nutrition:calories ?calories }",
+                "OPTIONAL { ?entity nutrition:indexGlycémique ?indexGlycemique }"
+            ])
+            
+        # Extraction des critères numériques
+        self.extract_numerical_criteria(original_query, analysis)
+        
+        # Extraction des critères qualitatifs
+        self.extract_qualitative_criteria(doc, original_query, analysis)
+        
+        # Recherche par nom
+        self.extract_name_search(original_query, analysis)
+        
+        return analysis
+    
+    def extract_numerical_criteria(self, query_text, analysis):
+        """Extraction des critères numériques avec regex améliorée"""
+        print(f"🔢 [Extraction] Analyse des critères numériques")
+        
+        # Âge
+        age_patterns = [
+            r'âge\s*[:\s]*(\d{1,3})\s*(?:ans)?',
+            r'(\d{1,3})\s*ans',
+            r'plus\s*(?:que|de)\s*(\d{1,3})\s*ans',
+            r'moins\s*(?:que|de)\s*(\d{1,3})\s*ans',
+            r'supérieur\s*à\s*(\d{1,3})\s*ans',
+            r'inférieur\s*à\s*(\d{1,3})\s*ans'
+        ]
+        
+        for pattern in age_patterns:
+            matches = re.finditer(pattern, query_text, re.IGNORECASE)
+            for match in matches:
+                age_value = int(match.group(1))
+                if "plus" in match.group(0) or "supérieur" in match.group(0):
+                    analysis['filters'].append(f"(?âge > {age_value})")
+                    print(f"✅ Filtre âge: > {age_value} ans")
+                elif "moins" in match.group(0) or "inférieur" in match.group(0):
+                    analysis['filters'].append(f"(?âge < {age_value})")
+                    print(f"✅ Filtre âge: < {age_value} ans")
+                else:
+                    analysis['filters'].append(f"(?âge = {age_value})")
+                    print(f"✅ Filtre âge: = {age_value} ans")
+        
+        # Poids
+        poids_patterns = [
+            r'poids\s*[:\s]*(\d{2,3}(?:[.,]\d+)?)\s*(?:kg)?',
+            r'(\d{2,3}(?:[.,]\d+)?)\s*kg',
+            r'poids\s*(?:supérieur|plus)\s*à\s*(\d+)\s*kg',
+            r'poids\s*(?:inférieur|moins)\s*à\s*(\d+)\s*kg'
+        ]
+        
+        for pattern in poids_patterns:
+            matches = re.finditer(pattern, query_text, re.IGNORECASE)
+            for match in matches:
+                poids_value = float(match.group(1).replace(',', '.'))
+                if "supérieur" in match.group(0) or "plus" in match.group(0):
+                    analysis['filters'].append(f"(?poids > {poids_value})")
+                    print(f"✅ Filtre poids: > {poids_value} kg")
+                elif "inférieur" in match.group(0) or "moins" in match.group(0):
+                    analysis['filters'].append(f"(?poids < {poids_value})")
+                    print(f"✅ Filtre poids: < {poids_value} kg")
+                else:
+                    analysis['filters'].append(f"(?poids = {poids_value})")
+                    print(f"✅ Filtre poids: = {poids_value} kg")
+        
+        # Taille
+        taille_patterns = [
+            r'taille\s*[:\s]*(\d{2,3}(?:[.,]\d+)?)\s*(?:cm)?',
+            r'(\d{2,3}(?:[.,]\d+)?)\s*cm',
+            r'taille\s*(?:supérieur|plus)\s*à\s*(\d+)\s*cm',
+            r'taille\s*(?:inférieur|moins)\s*à\s*(\d+)\s*cm'
+        ]
+        
+        for pattern in taille_patterns:
+            matches = re.finditer(pattern, query_text, re.IGNORECASE)
+            for match in matches:
+                taille_value = float(match.group(1).replace(',', '.'))
+                if "supérieur" in match.group(0) or "plus" in match.group(0):
+                    analysis['filters'].append(f"(?taille > {taille_value})")
+                    print(f"✅ Filtre taille: > {taille_value} cm")
+                elif "inférieur" in match.group(0) or "moins" in match.group(0):
+                    analysis['filters'].append(f"(?taille < {taille_value})")
+                    print(f"✅ Filtre taille: < {taille_value} cm")
+                else:
+                    analysis['filters'].append(f"(?taille = {taille_value})")
+                    print(f"✅ Filtre taille: = {taille_value} cm")
+    
+    def extract_qualitative_criteria(self, doc, query_text, analysis):
+        """Extraction des critères qualitatifs"""
+        text_lower = query_text.lower()
+        
+        # Critères pour les aliments
+        if "faible calorie" in text_lower or "peu calorique" in text_lower:
+            analysis['filters'].append("(?calories <= 150)")
+            analysis['order_by'] = "?calories"
+            print("✅ Filtre: faible calories")
+            
+        if "riche en fibre" in text_lower or "beaucoup de fibre" in text_lower:
+            analysis['filters'].append("(?teneurFibres >= 5)")
+            analysis['order_by'] = "DESC(?teneurFibres)"
+            print("✅ Filtre: riche en fibres")
+            
+        if "faible ig" in text_lower or "index glycémique bas" in text_lower:
+            analysis['filters'].append("(?indexGlycemique <= 55)")
+            analysis['order_by'] = "?indexGlycemique"
+            print("✅ Filtre: faible index glycémique")
+        
+        # Critères pour les personnes
+        if "jeune" in text_lower:
+            analysis['filters'].append("(?âge <= 30)")
+            analysis['order_by'] = "?âge"
+            print("✅ Filtre: jeune")
+            
+        if "âgé" in text_lower or "vieux" in text_lower or "senior" in text_lower:
+            analysis['filters'].append("(?âge >= 60)")
+            analysis['order_by'] = "DESC(?âge)"
+            print("✅ Filtre: âgé")
+    
+    def extract_name_search(self, query_text, analysis):
+        """Extraction de la recherche par nom"""
+        name_patterns = [
+            r'appel[ée]s?\s+([^,.!?]+)',
+            r'nomm[ée]s?\s+([^,.!?]+)',
+            r'prénom\s+([^,.!?]+)',
+            r'qui s\'appelle\s+([^,.!?]+)'
+        ]
+        
+        for pattern in name_patterns:
+            match = re.search(pattern, query_text, re.IGNORECASE)
+            if match:
+                name = match.group(1).strip()
+                analysis['search_patterns'].append(name)
+                print(f"✅ Recherche par nom: '{name}'")
+                break
+    
+    def build_sparql_query(self, entity_type, analysis, original_query):
+        """Construction de la requête SPARQL finale"""
+        
+        entity_mapping = {
+            "Aliment": "?entity a nutrition:Aliment ; nutrition:nom ?nom .",
+            "Recette": "?entity a nutrition:Recette ; nutrition:nom ?nom .", 
+            "ActivitePhysique": "?entity a nutrition:ActivitePhysique ; nutrition:nom ?nom .",
+            "Personne": "?entity a nutrition:Personne ; nutrition:nom ?nom ."
+        }
+        
+        # Construction de la requête de base
+        base_query = f"""
+        PREFIX nutrition: <{ONTOLOGY_PREFIX}>
+        PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+        SELECT DISTINCT ?id ?nom ?type ?score {' '.join(analysis['additional_selects'])} WHERE {{
+            {entity_mapping.get(entity_type, entity_mapping['Aliment'])}
+            BIND("{entity_type}" AS ?type)
+            BIND(STRAFTER(STR(?entity), "#") AS ?id)
+            BIND(1.0 AS ?score)
+        """
+        
+        # Ajouter les triplets supplémentaires
+        for triple in analysis['additional_triples']:
+            base_query += f"    {triple}\n"
+        
+        # Ajouter la recherche par nom si spécifiée
+        if analysis['search_patterns']:
+            name_pattern = analysis['search_patterns'][0]
+            base_query += f'    FILTER(REGEX(?nom, "{name_pattern}", "i"))\n'
+        
+        # Ajouter les filtres
+        if analysis['filters']:
+            base_query += "    FILTER(" + " && ".join(analysis['filters']) + ")\n"
+        
+        base_query += f"}} ORDER BY {analysis['order_by']} LIMIT 20"
+        
+        print(f"📊 [SpaCy] Requête SPARQL générée pour {entity_type}")
+        print(f"🎯 [SpaCy] Filtres: {analysis['filters']}")
+        return base_query
+    
+    def fallback_parser(self, query_text):
+        """Parser de secours amélioré"""
+        print("🔄 [SpaCy] Utilisation du parser de secours")
+        return self.build_advanced_fallback_query(query_text)
+    
+    def build_advanced_fallback_query(self, query_text):
+        """Parser de secours avec extraction regex avancée"""
+        print(f"🔄 [Fallback] Analyse de: {query_text}")
+        
+        # Détection du type d'entité
+        entity_type = "Aliment"  # Par défaut
+        
+        if any(word in query_text.lower() for word in ["personne", "utilisateur", "âge", "ans", "poids", "taille"]):
+            entity_type = "Personne"
+        elif any(word in query_text.lower() for word in ["recette", "plat", "menu", "cuisine"]):
+            entity_type = "Recette"
+        elif any(word in query_text.lower() for word in ["activité", "sport", "exercice"]):
+            entity_type = "ActivitePhysique"
+        
+        analysis = {
+            'filters': [],
+            'additional_selects': [],
+            'additional_triples': [],
+            'order_by': "?nom",
+            'search_patterns': []
+        }
+        
+        # Configuration basée sur le type d'entité
+        if entity_type == "Personne":
+            analysis['additional_selects'].extend(["?âge", "?poids", "?taille"])
+            analysis['additional_triples'].extend([
+                "OPTIONAL { ?entity nutrition:âge ?âge }",
+                "OPTIONAL { ?entity nutrition:poids ?poids }", 
+                "OPTIONAL { ?entity nutrition:taille ?taille }"
+            ])
+        elif entity_type == "Aliment":
+            analysis['additional_selects'].extend(["?calories", "?indexGlycemique"])
+            analysis['additional_triples'].extend([
+                "OPTIONAL { ?entity nutrition:calories ?calories }",
+                "OPTIONAL { ?entity nutrition:indexGlycémique ?indexGlycemique }"
+            ])
+        
+        # Extraction des critères
+        self.extract_numerical_criteria(query_text, analysis)
+        self.extract_name_search(query_text, analysis)
+        
+        return self.build_sparql_query(entity_type, analysis, query_text)
+
+    # Méthodes d'analyse sémantique (garder celles que vous avez)
+    def is_person_related(self, token):
+        person_indicators = ["personne", "utilisateur", "patient", "client", "humain"]
+        return token.lemma_ in person_indicators or any(child.lemma_ in ["âge", "poids", "taille"] for child in token.children)
+
+    def is_food_related(self, token):
+        food_indicators = ["aliment", "nourriture", "fruit", "légume", "viande", "poisson"]
+        return token.lemma_ in food_indicators
+
+    def is_recipe_related(self, token):
+        recipe_indicators = ["recette", "plat", "menu", "cuisine"]
+        return token.lemma_ in recipe_indicators
+
+    def is_activity_related(self, token):
+        activity_indicators = ["activité", "sport", "exercice", "entraînement"]
+        return token.lemma_ in activity_indicators
+
 # Initialisation du parser
 nutrition_parser = AdvancedNutritionQueryParser()
+
+
 
 def escape_sparql_string(s):
     """Escape special characters in SPARQL string literals"""
@@ -1939,38 +2275,107 @@ def delete_recommandation(rec_id):
 
 @app.route('/api/semantic-search', methods=['POST'])
 def semantic_search():
-    """Advanced semantic search using natural language queries"""
+    """Recherche sémantique avancée avec gestion d'erreur améliorée"""
     try:
         data = request.json
-        query_text = data.get('query', '').lower().strip()
+        query_text = data.get('query', '').strip()
         
         if not query_text:
-            return jsonify({"error": "Query is required"}), 400
+            return jsonify({"error": "La requête est requise"}), 400
         
-        # Analyse sémantique de la question
-        sparql_query_text = build_sparql_from_natural_language(query_text)
+        print(f"🎯 [Recherche] Requête reçue: '{query_text}'")
+        
+        # Analyse sémantique
+        sparql_query_text = nutrition_parser.parse_query(query_text)
         
         if not sparql_query_text:
-            return jsonify({"error": "Désolé, je n'ai pas compris votre question. Essayez de la reformuler."}), 400
+            return jsonify({
+                "error": "Désolé, je n'ai pas pu analyser votre requête. Essayez de la reformuler.",
+                "suggestions": [
+                    "Quels aliments sont riches en fibres ?",
+                    "Personnes de plus de 50 ans",
+                    "Recettes faibles en calories",
+                    "Aliments avec index glycémique bas"
+                ]
+            }), 400
         
-        print(f"[Semantic Search] Generated SPARQL:\n{sparql_query_text}")
+        print(f"📊 [Recherche] Requête SPARQL générée:\n{sparql_query_text}")
         
-        # Exécuter la requête SPARQL
+        # Exécution
         results = sparql_query(sparql_query_text)
         
-        # Vérifier si c'est une erreur
         if "error" in results:
-            return jsonify({"error": results["error"]}), 400
+            return jsonify({
+                "error": f"Erreur lors de l'exécution: {results['error']}",
+                "generated_sparql": sparql_query_text
+            }), 400
             
+        bindings = results.get("results", {}).get("bindings", [])
+        
         return jsonify({
-            "results": results.get("results", {}).get("bindings", []),
+            "results": bindings,
             "generated_sparql": sparql_query_text,
-            "original_query": query_text
+            "original_query": query_text,
+            "count": len(bindings),
+            "success": True
         })
         
     except Exception as e:
-        print(f"[Semantic Search] Error: {str(e)}")
-        return jsonify({"error": f"Erreur lors de la recherche: {str(e)}"}), 400
+        print(f"❌ [Recherche] Erreur: {str(e)}")
+        return jsonify({
+            "error": f"Erreur lors de la recherche: {str(e)}",
+            "success": False
+        }), 400
+
+@app.route('/api/search-examples', methods=['GET'])
+def get_search_examples():
+    """Retourne des exemples de recherche par catégorie"""
+    examples = {
+        "personnes": [
+            "Personnes de plus de 60 ans",
+            "Utilisateurs pesant moins de 70kg", 
+            "Jeunes de moins de 30 ans",
+            "Personnes avec taille 175 cm"
+        ],
+        "aliments": [
+            "Aliments riches en fibres",
+            "Faible index glycémique",
+            "Aliments moins de 200 calories",
+            "Riche en protéines"
+        ],
+        "recettes": [
+            "Recettes pour diabétiques",
+            "Plats végétariens",
+            "Recettes rapides",
+            "Cuisine santé"
+        ],
+        "activités": [
+            "Activités pour brûler des calories",
+            "Exercices cardio",
+            "Sports d'endurance"
+        ]
+    }
+    return jsonify(examples)
+
+@app.route('/api/search-stats', methods=['GET'])
+def get_search_stats():
+    """Statistiques sur les données disponibles"""
+    stats_query = """
+    PREFIX nutrition: <http://www.semanticweb.org/user/ontologies/2025/8/nutrition#>
+    SELECT ?type (COUNT(?entity) as ?count) WHERE {
+        ?entity a ?class .
+        BIND(REPLACE(STR(?class), ".*#", "") AS ?type)
+    } GROUP BY ?type
+    """
+    
+    results = sparql_query(stats_query)
+    stats = {}
+    
+    for binding in results.get("results", {}).get("bindings", []):
+        stats[binding['type']['value']] = int(binding['count']['value'])
+    
+    return jsonify(stats)
+
 
 def build_sparql_from_natural_language(query_text):
     """Fonction principale avec SpaCy intégré"""
@@ -2233,16 +2638,13 @@ def build_multi_entity_search(query_text):
 def get_search_suggestions():
     """Get search suggestions based on common queries"""
     suggestions = [
-        "Quels aliments sont riches en fibres ?",
-        "Montre-moi les aliments à faible index glycémique",
-        "Donne-moi des recettes pour diabétiques",
-        "Quels aliments pour perdre du poids ?",
-        "Aliments faibles en calories",
+        "Personnes vieux ?",
+        "Personnes Jeunes ?",
+        "Personnes de taille 183 cm ?",
+        "Moins de 200 calories ",
         "Activités physiques pour brûler des calories",
-        "Aliments riches en protéines",
-        "Recettes rapides à préparer",
-        "Aliments sans gluten",
-        "Quels aliments sont bons pour le cœur ?"
+
+        
     ]
     return jsonify(suggestions)
 
