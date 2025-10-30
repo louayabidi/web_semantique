@@ -76,8 +76,9 @@ export default function ActiviteManager() {
   }
 
   const handleDelete = async (id: string) => {
+    const rawId = id.replace(/^activite_/, "")
     try {
-      const response = await fetch(`http://localhost:5000/api/activites/${id}`, { method: "DELETE" })
+      const response = await fetch(`http://localhost:5000/api/activites/${rawId}`, { method: "DELETE" })
       if (response.ok) fetchActivites()
     } catch (error) {
       setError(`Erreur: ${error instanceof Error ? error.message : "Erreur inconnue"}`)
@@ -90,7 +91,8 @@ export default function ActiviteManager() {
       dureeActivite: activite.dureeActivite.value,
       type: activite.type?.value || "",
     })
-    setEditingId(activite.id.value)
+    const rawId = activite.id.value.replace(/^activite_/, "")
+    setEditingId(rawId)
   }
 
   return (
