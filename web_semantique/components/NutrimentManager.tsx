@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Plus, Trash2 } from "lucide-react"
+import { Edit2, Plus, Trash2 } from "lucide-react"
 
 interface Nutriment {
   id: { value: string }
@@ -24,6 +24,9 @@ export default function NutrimentManager() {
     doseRecommandée: "",
     unitéDose: "mg",
   })
+  const [editingId, setEditingId] = useState<string | null>(null)  
+  const [error, setError] = useState<string | null>(null)
+
 
   useEffect(() => {
     fetchNutriments()
@@ -42,34 +45,56 @@ export default function NutrimentManager() {
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    try {
-      const response = await fetch("http://localhost:5000/api/nutriments", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          nom: formData.nom,
-          doseRecommandée: Number.parseFloat(formData.doseRecommandée),
-          unitéDose: formData.unitéDose,
-        }),
-      })
+  e.preventDefault()
+  setError(null)  // reset error state
+  try {
+    const method = editingId ? "PUT" : "POST"
+    const url = editingId
+      ? `http://localhost:5000/api/nutriments/${editingId}`
+      : "http://localhost:5000/api/nutriments"
 
-      if (response.ok) {
-        setFormData({ nom: "", doseRecommandée: "", unitéDose: "mg" })
-        fetchNutriments()
-      }
-    } catch (error) {
-      console.error("[v0] Error submitting form:", error)
+    const response = await fetch(url, {
+      method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        nom: formData.nom,
+        doseRecommandée: Number.parseFloat(formData.doseRecommandée),
+        unitéDose: formData.unitéDose,
+      }),
+    })
+
+    if (response.ok) {
+      // Reset form and editingId
+      setFormData({ nom: "", doseRecommandée: "", unitéDose: "mg" })
+      setEditingId(null)
+      fetchNutriments()
+    } else {
+      const errorData = await response.json()
+      throw new Error(JSON.stringify(errorData))
     }
+  } catch (error) {
+    setError(`Erreur: ${error instanceof Error ? error.message : "Erreur inconnue"}`)
   }
+}
+
 
   const handleDelete = async (id: string) => {
+    const rawId = id.replace(/^nutriment_/, "")
     try {
-      await fetch(`http://localhost:5000/api/nutriments/${id}`, { method: "DELETE" })
+      await fetch(`http://localhost:5000/api/nutriments/${rawId}`, { method: "DELETE" })
       fetchNutriments()
     } catch (error) {
       console.error("[v0] Error deleting nutriment:", error)
     }
+  }
+  const handleEdit = (nutriment: Nutriment) => {
+    setFormData({
+      nom: nutriment.nom.value,
+      doseRecommandée: nutriment.doseRecommandée.value,
+      unitéDose: nutriment.unitéDose.value,
+    })
+    const rawId = nutriment.id.value.replace(/^nutriment_/, "")
+    setEditingId(rawId)
   }
 
   return (
@@ -113,9 +138,9 @@ export default function NutrimentManager() {
               </div>
             </div>
             <Button type="submit" className="w-full">
-              <Plus className="w-4 h-4 mr-2" />
-              Ajouter
-            </Button>
+                          <Plus className="w-4 h-4 mr-2" />
+                          {editingId ? "Modifier" : "Ajouter"}
+                        </Button>
           </form>
         </CardContent>
       </Card>
@@ -137,9 +162,14 @@ export default function NutrimentManager() {
                       {n.doseRecommandée.value} {n.unitéDose.value}
                     </p>
                   </div>
+                  <div className="flex gap-2">
+                  <Button variant="outline" size="sm" onClick={() => handleEdit(n)}>
+                      <Edit2 className="w-4 h-4" />
+                    </Button>
                   <Button variant="ghost" size="sm" onClick={() => handleDelete(n.id.value)}>
                     <Trash2 className="w-4 h-4" />
                   </Button>
+                  </div>
                 </div>
               ))}
             </div>
