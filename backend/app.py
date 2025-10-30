@@ -2056,7 +2056,12 @@ def update_repas(repas_id):
         clean_id = clean_repas_id(repas_id)
         repas_uri = generate_uri("repas", clean_id)
 
-        # --- Requête SPARQL correcte ---
+        # Construction sécurisée de la requête SPARQL
+        type_line = ""
+        if new_type:
+            type_line = f'<{repas_uri}> nutrition:type "{new_type}"^^xsd:string .'
+        
+        # --- Requête SPARQL corrigée ---
         update_query = f"""
         PREFIX nutrition: <{ONTOLOGY_PREFIX}>
         PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -2067,7 +2072,7 @@ def update_repas(repas_id):
         }}
         INSERT {{
             <{repas_uri}> nutrition:nom "{new_name}"^^xsd:string .
-            {"<" + repas_uri + "> nutrition:type \"" + new_type + "\"^^xsd:string ." if new_type else ""}
+            {type_line}
         }}
         WHERE {{
             OPTIONAL {{ <{repas_uri}> nutrition:nom ?oldName . }}
@@ -2082,8 +2087,6 @@ def update_repas(repas_id):
 
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 400
-
-
 # ==================== PROGRAMME BIEN-ÊTRE CRUD ====================
 
 @app.route('/api/programmes', methods=['GET'])
