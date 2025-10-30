@@ -56,11 +56,11 @@ export default function Home() {
   let visibleTabs = allTabs;
   if (user.role === "user") {
     visibleTabs = allTabs.filter(tab => 
-      ["dashboard", "personnes", "aliments", "activites", "recettes", "repas", "preferences", "recommandations", "search"].includes(tab.value)
+      ["dashboard",  "search"].includes(tab.value)
     );
   } else if (user.role === "psychology") {
     visibleTabs = allTabs.filter(tab => 
-      ["dashboard", "personnes", "conditions", "allergies", "objectifs", "programmes", "preferences", "recommandations", "search"].includes(tab.value)
+      ["dashboard", "programmes",  "recommandations", "search"].includes(tab.value)
     );
   }
   // Admin sees all by default
